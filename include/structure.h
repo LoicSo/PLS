@@ -1,4 +1,19 @@
+#ifndef LECTURE_H
+#include "lecture_ecriture.h"
+#define LECTURE_H
+#endif
+#ifndef ARBRE_H
 #include "arbres.h"
+#define ARBRE_H
+#endif
+#ifndef CALCUL_H
+#include "calcul.h"
+#define CALCUL_H
+#endif
+
+#ifndef STRUCTURE_H
+#define STRUCTURE_H
+#endif
 
 /*------------------STRUCTURE ARBRE------------------*/
 
@@ -19,5 +34,3 @@ int taille(lecture l);
 int char_dif(lecture l);
 int acces_occurrence(lecture l, int i);
 void modifier_occurrence(lecture *l, int i, int val);
-
-}

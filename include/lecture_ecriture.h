@@ -1,3 +1,7 @@
+#ifndef MAIN_H
+#define MAIN_H
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
@@ -12,4 +16,4 @@ typedef struct l{
 	int char_dif;
 }lecture, *p_lecture; 
 
-char* ecriture;
+typedef char* ecriture;

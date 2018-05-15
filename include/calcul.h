@@ -1,6 +1,13 @@
+#ifndef LECTURE_H
 #include "lecture_ecriture.h"
+#define LECTURE_H
+#endif
 
-float frequence[ASCII];
+#ifndef CALCUL_H
+#define CALCUL_H
+#endif
+
+typedef float frequence[ASCII];
 
 //initialise le tableau de fréquence à 0
 void initialiser();
