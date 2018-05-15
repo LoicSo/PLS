@@ -1,9 +1,17 @@
+#ifndef LECTURE_H
 #include "lecture_ecriture.h"
+#define LECTURE_H
+#endif
+
+#ifndef ARBRE_H
+#define ARBRE_H
+#endif
 
 typedef struct a {
 	struct a *f_gauche;
 	struct a *f_droite;
-	int poids;
+	int profondeur;
+	float poids;
 	int caractere;
 }arbre, *p_arbre;
 

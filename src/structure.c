@@ -48,4 +48,3 @@ void modifier_occurrence(lecture *l, int i, int val) {
     l->occurrence[i] = val;
 }
 
-}

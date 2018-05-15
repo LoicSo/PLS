@@ -1,4 +1,19 @@
+#ifndef LECTURE_H
+#include "lecture_ecriture.h"
+#define LECTURE_H
+#endif
+#ifndef ARBRE_H
 #include "arbres.h"
+#define ARBRE_H
+#endif
+#ifndef CALCUL_H
+#include "calcul.h"
+#define CALCUL_H
+#endif
+
+#ifndef STRUCTURE_H
+#define STRUCTURE_H
+#endif
 
 /*------------------STRUCTURE ARBRE------------------*/
 

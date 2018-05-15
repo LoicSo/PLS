@@ -1,6 +1,10 @@
+#ifndef MAIN_H
+#define MAIN_H
+#endif
+
 #include <stdio.h>
 #include <string.h>
-#include <limits.h>
+#include <stdlib.h>
 
 #define ASCII 256
 
@@ -12,4 +16,4 @@ typedef struct l{
 	int char_dif;
 }lecture, *p_lecture; 
 
-char* ecriture;
+typedef char* ecriture;
