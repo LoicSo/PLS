@@ -13,6 +13,6 @@ void initialiser() {
 void calcul_frequence(lecture fichier) {
    initialiser();
    for (int i=0; i<ASCII; i++) {
-       frequence[i] = (float)fichier.occurence[i] / fichier.taille;
+       frequence[i] = (float)acces_occurrence(f,i) / taille(f);
    }
 }
