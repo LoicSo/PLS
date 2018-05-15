@@ -34,3 +34,4 @@ int taille(lecture l);
 int char_dif(lecture l);
 int acces_occurrence(lecture l, int i);
 void modifier_occurrence(lecture *l, int i, int val);
+
