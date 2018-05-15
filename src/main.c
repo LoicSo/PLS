@@ -34,7 +34,27 @@ char *lignecommande(int argc, char *argv[], int* d, int* c, FILE **fichier) {
     printf("Au moins un paramètre -c (compression) ou -d (decompression) et requis.\n");
     exit(0);
   }
+  //si on a pas de nom de fichier: pb
+  if (argc - *c - *d == 1){
+    printf("Il manque le nom de fichier...\n");
+    exit(0);
+  }
   return nomfichier;
+}
+
+void compression (FILE** fichier){
+  // lire
+  // freq
+  // arbre
+  // table
+  // donnees
+  // ecrire donnees
+}
+
+void decompression (){
+  //lire_entete
+  //decoder
+  //ecrire donnees
 }
 
 
@@ -44,7 +64,7 @@ int main(int argc, char* argv[]){
   char* nomFichier = lignecommande(argc, argv, &param_d, &param_c, &fichier);
 
   if(param_c){
-    //TODO compression()
+    compression()
   }
   else if(param_d){
     //TODO decompression()
