@@ -3,8 +3,7 @@
 #include "structure.h"
 
 
-void
-ecrire_fichier (char *nom_fichier)
+void ecrire_fichier (char *nom_fichier)
 {
   int i = 0;
   size_t taille = 0;
