@@ -1,6 +1,5 @@
 #include "arbres.h"
 #include "structure.h"
-
 #include <stdlib.h>
 
 
