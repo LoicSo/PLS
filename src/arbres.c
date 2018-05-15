@@ -141,6 +141,35 @@ void afficher_arbre (p_arbre a, int niveau)
 	return ;
 }
 
+void trouver_feuille(table *t, p_arbre a, int valeur){
+	if(a->f_gauche == NULL && a->f_gauche == NULL){
+		modifier_correspondance(t, a->caractere, valeur);
+		modifier_longueur(t, a->caractere, a->profondeur);
+	}else{
+		trouver_feuille(t, a->f_gauche, (valeur<<1)+1);
+		trouver_feuille(t, a->f_droite, (valeur<<1));
+	}
+
+}
+
+table faire_table(p_arbre a){
+	table t;
+	for (int i=0; i<ASCII; i++){
+		modifier_longueur(&t, i,0);
+		modifier_correspondance(&t,i,0);
+	}
+	trouver_feuille(&t,a,0);
+	return t;
+}
+
+void affciher_table(table t){
+	for(int i=0; i<ASCII; i++){
+		if (acces_longueur(t, i)){
+			printf("code ascii : %d, valeur :%d, longueur : %d\n", i, acces_correspondance(t,i), acces_longueur(t,i) );
+		}
+	}
+}
+
 int main(int argc, char const *argv[])
 {
 	frequence f;
@@ -159,6 +188,8 @@ int main(int argc, char const *argv[])
 	p_arbre arbre;
 	arbre = creation_arbre(f, l);
 	afficher_arbre(arbre, 0);
+	table t = faire_table(arbre);
+	affciher_table(t);
 
 	return 0;
 }
