@@ -11,3 +11,4 @@ typedef struct{
 	int  correspondance[ASCII];
 	int longueur[ASCII];
 }table, *p_table;
+
