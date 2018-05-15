@@ -99,7 +99,7 @@ void ajouter(p_arbre **tab_noeud, int nb_car, p_arbre noeud){
 }
 
 p_arbre creation_arbre(frequence f, p_lecture l){
-	int nb_car = char_dif(*l);	
+	int nb_car = char_dif(*l);
 	p_arbre *tab_noeud;
 	tab_noeud = init_tab(f, nb_car);
 	int nb_noeud = nb_car;
@@ -141,24 +141,149 @@ void afficher_arbre (p_arbre a, int niveau)
 	return ;
 }
 
+void trouver_feuille(table *t, p_arbre a, int valeur){
+	if(a->f_gauche == NULL && a->f_gauche == NULL){
+		modifier_correspondance(t, a->caractere, valeur);
+		modifier_longueur(t, a->caractere, a->profondeur);
+	}else{
+		trouver_feuille(t, a->f_gauche, (valeur<<1)+1);
+		trouver_feuille(t, a->f_droite, (valeur<<1));
+
+	}
+
+}
+
+table faire_table(p_arbre a){
+	table t;
+	for (int i=0; i<ASCII; i++){
+		modifier_longueur(&t, i,0);
+		modifier_correspondance(&t,i,0);
+	}
+	trouver_feuille(&t,a,0);
+	return t;
+}
+
+void affciher_table(table t){
+	for(int i=0; i<ASCII; i++){
+		if (acces_longueur(t, i)){
+			printf("code ascii : %d, valeur :%d, longueur : %d\n", i, acces_correspondance(t,i), acces_longueur(t,i) );
+		}
+	}
+
+}
+
+
+//fonctions p_file
+void enfile (p_file f, p_arbre n){
+  f->T[f->queue++] = n;
+}
+
+p_arbre defile (p_file f){
+  return f->T[f->tete++];
+}
+
+int fileVide(p_file f){
+  if (f->tete == f->queue){
+    return 1;
+  }
+  return 0;
+}
+
+//remplis une file simplement avec les noeuds de l'arbre
+p_file remplir_file_largeur (p_arbre a){
+  p_file aFaire = (p_file) malloc (sizeof(file));
+  aFaire->tete = 0;
+  aFaire->queue = 0;
+  p_file resultat = (p_file) malloc (sizeof(file));
+  resultat->tete = 0;
+  resultat->queue = 0;
+
+  // //initialisation de la p_file resultat avec le noeud racine
+  // enfile(resultat, a);
+  //initialisation de la p_file de noeuds a parcourir
+  if(a->f_gauche != NULL)
+    enfile(aFaire, a->f_gauche);
+  if(a->f_droite != NULL)
+    enfile(aFaire, a->f_droite);
+
+    //pour chaque noeud a parcourir on ajoute les enfants dans result
+  while (!fileVide(aFaire)){
+    p_arbre tmp = defile(aFaire);
+    if(tmp->f_gauche == NULL && tmp->f_droite == NULL){
+      enfile(resultat, tmp);
+    }else{
+      if(tmp->f_gauche != NULL)
+        enfile(aFaire, tmp->f_gauche);
+      if(tmp->f_droite != NULL)
+        enfile(aFaire, tmp->f_droite);
+    }
+  }
+  return resultat;
+}
+
+//trie la sequence entre n->tete et n->queue-1
+void trier_sequence(p_file n){
+  while(n->tete < n->queue-1){
+    //on cherche le plus grand caractere de la sequence
+    int id_max = n->tete;
+    for(int i = n->tete+1; i<n->queue; i++){
+      id_max = (n->T[id_max]->caractere > n->T[i]->caractere) ? id_max : i;
+    }
+    //si ce n'est pas le premier, on les switch
+    if(id_max>n->tete){
+      int caract_tmp = n->T[n->tete]->caractere;
+      float poids_tmp = n->T[n->tete]->poids;
+      n->T[n->tete]->caractere = n->T[id_max]->caractere;
+      n->T[n->tete]->poids = n->T[id_max]->poids;
+      n->T[id_max]->caractere = caract_tmp;
+      n->T[id_max]->poids = poids_tmp;
+    }
+    n->tete++;
+  }
+  n->tete++;//n->tete == n->queue
+}
+
+void canoniser(p_arbre a){
+  p_file noeuds = remplir_file_largeur(a);
+  int taille = noeuds->queue;
+  //NOTE a partir d'ici on utilise la file comme sequence de feuilles de meme poids
+  noeuds->queue = 0;
+  noeuds->tete = 0;
+  while(noeuds->queue < taille){
+    int profondeur = noeuds->T[noeuds->queue++]->profondeur; //on charge la profondeur de la sequence de noeud à trier
+    while(noeuds->queue < taille && noeuds->T[noeuds->queue]->profondeur == profondeur)
+      noeuds->queue++; //on incrémente queue jusqu'a ce que la la feuille ne soit plus sur la meme ligne.
+    //trie de la sequence
+    trier_sequence(noeuds);
+  }
+  //en sortie, n->tete = n->queue = taille
+  //l'arbre est canoniser grace au trie
+}
+
 int main(int argc, char const *argv[])
 {
 	frequence f;
 	p_lecture l = malloc(sizeof(lecture));
 
-	f[0] = 0.1;
-	f[1] = 0.2;
-	f[2] = 0.3;
-	f[3] = 0.4;
-	for (int i = 4; i < ASCII; ++i)
+	f[0] = 0.11;
+	f[1] = 0.04;
+	f[2] = 0.1;
+	f[3] = 0.02;
+  f[4] = 0.6;
+  f[5] = 0.13;
+	for (int i = 6; i < ASCII; ++i)
 	{
 		f[i] = 0.0;
 	}
-	l->char_dif = 4;
+	l->char_dif = 6;
 
 	p_arbre arbre;
 	arbre = creation_arbre(f, l);
 	afficher_arbre(arbre, 0);
+	table t = faire_table(arbre);
+	affciher_table(t);
+  canoniser(arbre);
+  afficher_arbre(arbre,0);
 
 	return 0;
 }

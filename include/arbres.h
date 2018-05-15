@@ -20,3 +20,7 @@ typedef struct{
 	int longueur[ASCII];
 }table, *p_table;
 
+typedef struct f{
+  int queue, tete;
+  p_arbre T[ASCII];
+} file, *p_file;

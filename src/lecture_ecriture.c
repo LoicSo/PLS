@@ -2,7 +2,6 @@
 #include "arbres.h"
 #include "structure.h"
 
-
 void ecrire_fichier (char *nom_fichier)
 {
   int i = 0;
@@ -31,8 +30,6 @@ void ecrire_fichier (char *nom_fichier)
   fclose (fichier); //fermeture du fichier
   return;
 }
-
-
 
 
 //On initialise notre structure lecture
@@ -74,6 +71,7 @@ lecture lire_fichier(FILE* f){
   }
   return fichier;
 }
+
 
 
 void faire_donnee(p_table t, p_lecture l){
