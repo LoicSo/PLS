@@ -1,5 +1,4 @@
 #include "lecture_ecriture.h"
-#include <stdlib.h>
 
 /*
 incrémente les options possibles
