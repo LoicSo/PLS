@@ -79,7 +79,7 @@ lecture lire_fichier(FILE* f){
 void faire_donnee(p_table t, p_lecture l){
 	int i=0;
 	int j=0;
-	// nous initialisons la taille des données à ecrire 
+	// nous initialisons la taille des données à ecrire
 	ecriture = malloc(sizeof(char) * l->taille);
 	char current =*(l->donnee+i);
 	int entier;
@@ -94,9 +94,9 @@ void faire_donnee(p_table t, p_lecture l){
 	int caractere_tmp;
 	int k;
 	while( current != '\0'){
-		//on Prend le code ascii du caractère courant 
+		//on Prend le code ascii du caractère courant
 		entier = (int)current;
-		//on prend la longueur du code correspondant 
+		//on prend la longueur du code correspondant
 		longueur =  acces_longueur(t,entier);
 		//on prend l'entier correspondant au code du caractère dans l'arbre de huffman
 		corresp = acces_correspondance(t,entier);
@@ -114,7 +114,7 @@ void faire_donnee(p_table t, p_lecture l){
 			car_fin=0;
 			compteur_current=8;
 		}
-		//Sinon il faut tronquer les premier bit de l'entier afficher le caractère et ajouter le reste dans le caractère suivant 
+		//Sinon il faut tronquer les premier bit de l'entier afficher le caractère et ajouter le reste dans le caractère suivant
 		else{
 			k=0;
 
@@ -144,6 +144,33 @@ void faire_donnee(p_table t, p_lecture l){
 
 }
 
+//////////////// DECODAGE
+/*
+LE FICHIER MUST BE OPENED
+lecture de l'entete :
+remplis la lecture : taille et donnees
+remplis la table  : longueur
+ferme le fichier
+*/
+void lire_entete(FILE* f, p_lecture lect, p_table t){
+  initialisation_struct(lect);
+  //on écrit le nombre de caract
+  fscanf(f,"%d", &(p_lecture->taille);
+  //on remplie le tableau longueur dans la structure table
+  int l;//sert pour la longueur de chaque lettre
+  for(int i = 0, i<ASCII && !feof(f), i++){
+    fscanf(f,"%c",&l);
+    modifier_longueur(&t, i, l);
+		modifier_correspondance(&t, i, 0);
+  }
+  //remplissage des donnees
+  p_lecture->donnee = malloc(taille(&l));
+  int i = 0;
+  while(!feof(f)){
+    fscanf(f, "%c", p_lecture->donnee[i++];
+  }
+}
+
 int main_test_faire_donee(){
 	table t;
 	t.correspondance[65] = 5;
@@ -159,4 +186,3 @@ int main_test_faire_donee(){
 	printf("chaine compressé :%s\n",ecriture );
 
 }
-
