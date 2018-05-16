@@ -1,6 +1,6 @@
 #ifndef LECTURE_H
 #define LECTURE_H
-#endif
+
 
 #include <stdio.h>
 #include <string.h>
@@ -17,7 +17,7 @@ typedef struct l{
 }lecture, *p_lecture; 
 
  char* ecriture;
-
+#endif
 /**
  * @brief Permet d'écrire dans un fichier 
  * @details Prend les données compressées
@@ -59,7 +59,7 @@ lecture lire_fichier(FILE* f);
  * @param t la table correspondant à l'arbre de Huffman
  * @param l la structure lecture
  */
-void faire_donnee(p_table t, p_lecture l);
+//void faire_donnee(p_table t, p_lecture l);
 
 
 
