@@ -39,4 +39,3 @@ $(EXEC) : $(OBJS)
 clean :
 	rm -f $(OBJS)
 	rm -f $(EXEC)
-	rm -f $(LIBDIR)/*.a $(LIBDIR)/*.so
