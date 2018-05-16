@@ -10,10 +10,10 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 
   //création et ouverture d'un fichier dont le nom est passé en paramètre
   //"w" pour write : pour écrire dedans
-    char* dir ="../examples/";
+    // char* dir ="../examples/";
     char* extension = ".cpr";
-    char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(dir)+strlen(extension)));
-    strcat(nom,dir);
+    char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
+    // strcat(nom,dir);
     strcat(nom, nom_fichier);
     strcat(nom, extension);
     FILE* fichier = fopen (nom, "w+");
@@ -32,7 +32,9 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
   while (i != taille_ecriture) {
     fprintf (fichier, "%c", ecriture[i]);
     i++;
+
   }
+  printf("Ecriture dans le fichier %s\n", nom);
 
   fclose (fichier); //fermeture du fichier
   return;
