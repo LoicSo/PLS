@@ -79,6 +79,7 @@ lecture lire_fichier(FILE* f){
 void faire_donnee(p_table t, p_lecture l){
 	int i=0;
 	int j=0;
+	// nous initialisons la taille des données à ecrire 
 	ecriture = malloc(sizeof(char) * l->taille);
 	char current =*(l->donnee+i);
 	int entier;
@@ -93,10 +94,13 @@ void faire_donnee(p_table t, p_lecture l){
 	int caractere_tmp;
 	int k;
 	while( current != '\0'){
+		//on Prend le code ascii du caractère courant 
 		entier = (int)current;
-
+		//on prend la longueur du code correspondant 
 		longueur =  acces_longueur(t,entier);
+		//on prend l'entier correspondant au code du caractère dans l'arbre de huffman
 		corresp = acces_correspondance(t,entier);
+		//si la longueur tiens dans 8 les bits restant du carctère a afficher
 		if(compteur_current -longueur >0){
 			car_fin += (corresp << (compteur_current -longueur));
 			compteur_current = compteur_current -longueur;
@@ -110,6 +114,7 @@ void faire_donnee(p_table t, p_lecture l){
 			car_fin=0;
 			compteur_current=8;
 		}
+		//Sinon il faut tronquer les premier bit de l'entier afficher le caractère et ajouter le reste dans le caractère suivant 
 		else{
 			k=0;
 

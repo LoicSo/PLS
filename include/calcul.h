@@ -9,9 +9,16 @@
 
 float frequence[ASCII];
 
-//initialise le tableau de fréquence à 0
+/**
+ * @brief Permet d'initialisé la fréquence a 0
+ * 
+ */
 void initialiser();
 
-//calcul des fréquences de la structure lecture
-//met à jour le tableau de fréquence
+/**
+ * @brief Permet de calculer les fréquence a partir de la structure lecture
+ * 
+ * 
+ * @param fichier structure lecture complete
+ */
 void calcul_frequence(lecture fichier);

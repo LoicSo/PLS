@@ -4,6 +4,7 @@
 #include "calcul.h"
 #include "structure.h"
 
+
 /* Initialisation du tableau de noeud avec toutes les feuilles */
 p_arbre* init_tab(float *f, int nb_car){
 	int i = 0;
@@ -108,6 +109,7 @@ void ajouter(p_arbre **tab_noeud, int nb_car, p_arbre noeud){
 }
 
 // Creation de l'arbre de Huffman
+
 p_arbre creation_arbre(float *f, p_lecture l){
 	int nb_car = char_dif(*l);
 	p_arbre *tab_noeud;
@@ -157,11 +159,15 @@ void afficher_arbre (p_arbre a, int niveau)
 
 
 void trouver_feuille(table *t, p_arbre a, int valeur){
+	//Fonction qui permet de trouver une feuille et de modifier la correspondance et la longueur de la feuille 
 	if(a->f_gauche == NULL && a->f_gauche == NULL){
+		//C'est une feuille, modification
 		modifier_correspondance(t, a->caractere, valeur);
 		modifier_longueur(t, a->caractere, a->profondeur);
 	}else{
+		//Ce n'est pas une feuille, si on va a gauche on multiplie la valeur par 2 et nous ajouter +1
 		trouver_feuille(t, a->f_gauche, (valeur<<1)+1);
+		//Si on va a droite on multiplie seulement la valeur par 2
 		trouver_feuille(t, a->f_droite, (valeur<<1));
 
 	}
@@ -169,6 +175,7 @@ void trouver_feuille(table *t, p_arbre a, int valeur){
 }
 
 table faire_table(p_arbre a){
+	//Initialisation de la table avec tous ses champs a 0
 	table t;
 	for (int i=0; i<ASCII; i++){
 		modifier_longueur(&t, i,0);
@@ -274,30 +281,30 @@ void canoniser(p_arbre a){
   //en sortie, n->tete = n->queue = taille
   //l'arbre est canoniser grace au trie
 }
+// int main(int argc, char const *argv[])
+// {
+// 	frequence f;
+// 	p_lecture l = malloc(sizeof(lecture));
 
-int main(int argc, char const *argv[])
-{
-	p_lecture l = malloc(sizeof(lecture));
+// 	f[0] = 0.11;
+// 	f[1] = 0.04;
+// 	f[2] = 0.1;
+// 	f[3] = 0.02;
+//   f[4] = 0.6;
+//   f[5] = 0.13;
+// 	for (int i = 6; i < ASCII; ++i)
+// 	{
+// 		f[i] = 0.0;
+// 	}
+// 	l->char_dif = 6;
 
-	frequence[0] = 0.11;
-	frequence[1] = 0.04;
-	frequence[2] = 0.1;
-	frequence[3] = 0.02;
-  	frequence[4] = 0.6;
-  	frequence[5] = 0.13;
-	for (int i = 6; i < ASCII; ++i)
-	{
-		frequence[i] = 0.0;
-	}
-	l->char_dif = 6;
+// 	p_arbre arbre;
+// 	arbre = creation_arbre(f, l);
+// 	afficher_arbre(arbre, 0);
+// 	table t = faire_table(arbre);
+// 	affciher_table(t);
+//   canoniser(arbre);
+//   afficher_arbre(arbre,0);
 
-	p_arbre arbre;
-	arbre = creation_arbre(frequence, l);
-	afficher_arbre(arbre, 0);
-	table t = faire_table(arbre);
-	affciher_table(t);
-  	canoniser(arbre);
-  	afficher_arbre(arbre,0);
-
-	return 0;
-}
+// 	return 0;
+// }
