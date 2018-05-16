@@ -2,6 +2,8 @@
 #include "arbres.h"
 #include "structure.h"
 
+#define TAILLE_CHAR 8
+
 void ecrire_fichier (char *nom_fichier)
 {
   int i = 0;
@@ -156,5 +158,48 @@ int main_test_faire_donee(){
 	faire_donnee(&t,&l);
 	printf("chaine compressé :%s\n",ecriture );
 
+}
+
+
+int prendre_byte(char current, int i){
+	int res=0;
+	res &= 1<<(i-1);
+	res= res >>(i-1);
+	return res;
+
+}
+
+void traiter_bit(p_arbre *tmp, int byte, p_arbre *a, int *i ){
+	if(byte){
+		*tmp = *tmp->f_gauche;
+	}
+	else{
+		*tmp = *tmp->f_droite;
+	}
+
+	if(*tmp->f_droite == NULL && *tmp->f_gauche == NULL ){
+		*(ecriture+*i) = (char)*tmp->caractere ;
+		*i=*i+1;
+		*tmp = *a;
+	}
+}
+
+void decripter_donnee(p_arbre a, p_lecture l){
+	int byte;
+	int k=0;
+	p_arbre tmp = a;
+	char current;
+	int taille = taille(l);
+	ecriture = malloc(sizeof(char)*taille);
+
+	current =*(l->donnee+i);
+	while(current != '\0' && i<taille){
+		for(int i=TAILLE_CHAR; i >0; i--){
+			byte = prendre_byte(current, i);
+			traiter_bit(&tmp, byte, &a, &k);
+		}
+	}
+	
+	return;
 }
 

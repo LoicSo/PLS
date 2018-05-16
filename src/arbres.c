@@ -281,6 +281,9 @@ void canoniser(p_arbre a){
   //en sortie, n->tete = n->queue = taille
   //l'arbre est canoniser grace au trie
 }
+
+
+s
 // int main(int argc, char const *argv[])
 // {
 // 	frequence f;
