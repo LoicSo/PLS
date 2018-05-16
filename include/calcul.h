@@ -7,7 +7,7 @@
 #define CALCUL_H
 #endif
 
-typedef float frequence[ASCII];
+float frequence[ASCII];
 
 //initialise le tableau de fréquence à 0
 void initialiser();

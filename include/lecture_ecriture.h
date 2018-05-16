@@ -16,4 +16,4 @@ typedef struct l{
 	int char_dif;
 }lecture, *p_lecture; 
 
-typedef char* ecriture;
+char* ecriture;
