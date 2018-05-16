@@ -24,4 +24,5 @@ typedef struct f{
   p_arbre T[ASCII];
 } file, *p_file;
 
+
 #endif

@@ -2,13 +2,13 @@
 #include "arbres_fonctions.h"
 #include "calcul.h"
 
+
 /*
 incrémente les options possibles
 Ouvre le fichier en lecture
 return le nom du fichier
 */
-char *lignecommande(int argc, char *argv[], int* d, int* c, FILE **fichier) {
-  char *nomfichier;
+void lignecommande(int argc, char *argv[], int* d, int* c, char** nomFichier) {
   *d = *c = 0;
   for (int i = 1; i < argc; i++) {
     //si c'est un paramètre
@@ -26,8 +26,8 @@ char *lignecommande(int argc, char *argv[], int* d, int* c, FILE **fichier) {
     }
     //c'est le nom de fichier
     else {
-      *fichier = fopen(argv[i], "r");
-      nomfichier = argv[i];
+      *nomFichier = malloc((sizeof(char)*strlen(argv[i])));
+      *nomFichier = argv[i];
     }
   }
   //si il n'y a pas de parmètres
@@ -40,27 +40,91 @@ char *lignecommande(int argc, char *argv[], int* d, int* c, FILE **fichier) {
     printf("Il manque le nom de fichier...\n");
     exit(0);
   }
-  return nomfichier;
+}
+//On initialise notre structure lecture
+void initialisation_struct(p_lecture fichier){
+  fichier->taille = 0;
+  fichier->char_dif = 0;
+  for (int i=0; i<ASCII; i++)
+    fichier->occurrence[i]=0;
 }
 
-void compression (FILE* fichier, char* nom_fichier){
-  // lire
-  p_lecture l=NULL;
-  p_arbre a=NULL;
-  p_table t=NULL;
+//Renvoie le nombre de caractère du fichier
+int longueur_fichier(char** nom){
+  FILE* f=fopen(*nom,"r");
+  if (f == NULL)
+    {
+      printf ("Erreur lors de l'ouverture du fichier.\n");
+      exit(1);
+    }
+  int taille=0; char c;
+  while((c=fgetc(f)) != EOF){
+    taille++;
+    printf("%c",c );
+  }
+  fclose(f);
+  return taille;
+}
 
-  lire_fichier(fichier,l);
+//On remplit notre structure à partir des données d'un fichier passé en paramètre
+void lire_fichier(char** nom, p_lecture fichier){
+  unsigned char caractere;
+  unsigned int entier;
+  int i=0;
+  printf("hlleo\n" );
+  printf("%s\n",*nom );
+  printf("coucou\n");
+  initialisation_struct(fichier);
+  printf("%s\n",*nom );
+  fichier->taille = longueur_fichier(nom);
+  printf("%i\n", fichier->taille);
+  fichier->donnee=malloc(sizeof(char)*fichier->taille);
+  FILE* f=fopen(*nom,"r");
+  while(!feof(f)){
+    //on lit un caractère du fichier
+    fscanf(f,"%c", (char*)&entier);
+    caractere = (char)entier;
+    //On ajoute ce caractère dans notre structure
+    fichier->donnee[i]=caractere;
+    //Si le caractère n'a encore jamais été lu, on incrémente la variable qui correspond au nombre de caractères différents
+    if (fichier->occurrence[(int)caractere] == 0)
+      fichier->char_dif++;
+    //On incrémente l'occurence du caractère
+    fichier->occurrence[(int)caractere]++;
+    i++;
+  }
+  printf("char dif : %d\n", fichier->char_dif);
+  fclose(f);
+}
+
+
+
+
+
+void compression (char** nom_fichier){
+  // lire
+  double frequence[ASCII];
+  p_lecture l= malloc(sizeof(lecture));
+  p_arbre a = malloc(sizeof(arbre));
+  p_table t= malloc(sizeof(table));
+  printf("%s\n", *nom_fichier );
+  char* temp = malloc(sizeof(50));
+  strcpy(temp, *nom_fichier);
+  printf("%s\n",temp );
+  lire_fichier(&temp,l);
   // freq
-  calcul_frequence(*l);
+  printf("nombre différent %d\n", l->char_dif);
+  calcul_frequence(frequence, *l);
   // arbre
   a = creation_arbre(frequence, l);
   canoniser(a);
   // table
   *t=faire_table(a);
+  affciher_table(*t);
   // donnees
   faire_donnee(t,l);
   // ecrire donnees
-  ecrire_fichier(nom_fichier, *l, *t);
+  ecrire_fichier(*nom_fichier, *l, *t);
 }
 
 void decompression (){
@@ -72,15 +136,11 @@ void decompression (){
 
 int main(int argc, char* argv[]){
   int param_c, param_d;
-  FILE* fichier = NULL;
-  char* nomFichier = lignecommande(argc, argv, &param_d, &param_c, &fichier);
-  if (fichier == NULL)
-    {
-      printf ("Erreur lors de l'ouverture du fichier.\n");
-      exit(1);
-    }
+  char* nomFichier;
+  lignecommande(argc, argv, &param_d, &param_c, &nomFichier);
   if(param_c){
-    compression(fichier,nomFichier);
+    printf("%s\n",nomFichier );
+    compression(&nomFichier);
   }
   else if(param_d){
     //TODO decompression()

@@ -4,21 +4,23 @@
 #include "calcul.h"
 #include "structure.h"
 
+
 /* Initialisation du tableau de noeud avec toutes les feuilles */
-p_arbre* init_tab(float *f, int nb_car){
+p_arbre* init_tab(double f[ASCII], int nb_car, lecture l){
 	int i = 0;
 	p_arbre noeud;
 
 	p_arbre *tab_noeud = malloc(nb_car * sizeof(p_arbre));
 
+	printf("nb car %d\n", nb_car);
 	for (int j = 0; j < nb_car; ++j)
 	{
 		noeud = malloc(sizeof(arbre));
 
 		// On cherche les caracteres presents dans les donnees
-		while(i < ASCII && f[i] == 0.0)
-			i++;
-
+		while(i < ASCII && acces_occurrence(l,i) == 0){
+					i++;
+		}
 		// On creer une feuille pour chaque caractere
 		if (i < ASCII)
 		{
@@ -27,6 +29,7 @@ p_arbre* init_tab(float *f, int nb_car){
 			noeud->profondeur = 0;
 			noeud->poids = f[i];
 			noeud->caractere = i;
+			printf("poids: %lf    caract: %d    j: %d\n", f[i], i,  j);
 
 			tab_noeud[j] = noeud;
 			i++;
@@ -37,7 +40,7 @@ p_arbre* init_tab(float *f, int nb_car){
 
 // On cherche le noeud avec la frequence la plus basse
 p_arbre mini(p_arbre tab_noeud[], int nb_car){
-	float min = 1.0;
+	double min = 1.0;
 	p_arbre res;
 	for (int i = 0; i < nb_car; ++i)
 	{
@@ -107,30 +110,6 @@ void ajouter(p_arbre **tab_noeud, int nb_car, p_arbre noeud){
 		(*tab_noeud)[i] = noeud;
 }
 
-// Creation de l'arbre de Huffman
-p_arbre creation_arbre(float *f, p_lecture l){
-	int nb_car = char_dif(*l);
-	p_arbre *tab_noeud;
-	tab_noeud = init_tab(f, nb_car);
-	int nb_noeud = nb_car;
-
-	p_arbre gauche, droite, parent;
-
-	while (nb_noeud > 1){
-		// On recupere les deux noeuds avec les frequences les plus faible
-		gauche = mini(tab_noeud, nb_car);
-		// Et on les supprime du tableau
-		supprimer(&tab_noeud, gauche, nb_car);
-		droite = mini(tab_noeud, nb_car);
-		supprimer(&tab_noeud, droite, nb_car);
-		// On cree le noeud parent
-		parent = creer_parent(gauche, droite);
-		// Et on l'ajoute au tableau
-		ajouter(&tab_noeud, nb_car, parent);
-		nb_noeud--;
-	}
-	return *tab_noeud;
-}
 
 void afficher_arbre (p_arbre a, int niveau)
 {
@@ -148,7 +127,7 @@ void afficher_arbre (p_arbre a, int niveau)
 
 		for (i = 0; i < niveau; i++)
 			printf ("\t") ;
-		printf (" %f %d (%d)\n\n", a->poids, a->caractere, a->profondeur) ;
+		printf (" %lf %d (%d)\n\n", a->poids, a->caractere, a->profondeur) ;
 
 		afficher_arbre (a->f_gauche, niveau+1) ;
 	}
@@ -156,12 +135,48 @@ void afficher_arbre (p_arbre a, int niveau)
 }
 
 
+// Creation de l'arbre de Huffman
+
+p_arbre creation_arbre(double f[ASCII], p_lecture l){
+	int nb_car = char_dif(*l);
+	p_arbre *tab_noeud;
+	tab_noeud = init_tab(f, nb_car,*l);
+	int nb_noeud = nb_car;
+
+	p_arbre gauche, droite, parent;
+
+	while (nb_noeud > 1){
+		// On recupere les deux noeuds avec les frequences les plus faible
+		gauche = mini(tab_noeud, nb_car);
+		// printf("%d\n", gauche->caractere);
+		// Et on les supprime du tableau
+		supprimer(&tab_noeud, gauche, nb_car);
+		droite = mini(tab_noeud, nb_car);
+		// printf("%d\n", droite->caractere);
+		supprimer(&tab_noeud, droite, nb_car);
+		// On cree le noeud parent
+		parent = creer_parent(gauche, droite);
+		// Et on l'ajoute au tableau
+		ajouter(&tab_noeud, nb_car, parent);
+		nb_noeud--;
+	}
+	afficher_arbre(*tab_noeud, 0);
+	return *tab_noeud;
+}
+
+
+
+
 void trouver_feuille(table *t, p_arbre a, int valeur){
+	//Fonction qui permet de trouver une feuille et de modifier la correspondance et la longueur de la feuille
 	if(a->f_gauche == NULL && a->f_gauche == NULL){
+		//C'est une feuille, modification
 		modifier_correspondance(t, a->caractere, valeur);
 		modifier_longueur(t, a->caractere, a->profondeur);
 	}else{
+		//Ce n'est pas une feuille, si on va a gauche on multiplie la valeur par 2 et nous ajouter +1
 		trouver_feuille(t, a->f_gauche, (valeur<<1)+1);
+		//Si on va a droite on multiplie seulement la valeur par 2
 		trouver_feuille(t, a->f_droite, (valeur<<1));
 
 	}
@@ -169,6 +184,7 @@ void trouver_feuille(table *t, p_arbre a, int valeur){
 }
 
 table faire_table(p_arbre a){
+	//Initialisation de la table avec tous ses champs a 0
 	table t;
 	for (int i=0; i<ASCII; i++){
 		modifier_longueur(&t, i,0);
@@ -190,6 +206,7 @@ void affciher_table(table t){
 
 //fonctions p_file
 void enfile (p_file f, p_arbre n){
+	// printf("queue : %d\n", f->queue);
   f->T[f->queue++] = n;
 }
 
@@ -198,6 +215,7 @@ p_arbre defile (p_file f){
 }
 
 int fileVide(p_file f){
+	// printf("tete: %d, queue: %d\n", f->tete, f->queue);
   if (f->tete == f->queue){
     return 1;
   }
@@ -206,6 +224,7 @@ int fileVide(p_file f){
 
 //remplis une file simplement avec les noeuds de l'arbre
 p_file remplir_file_largeur (p_arbre a){
+	// afficher_arbre(a, 0);
   p_file aFaire = (p_file) malloc (sizeof(file));
   aFaire->tete = 0;
   aFaire->queue = 0;
@@ -222,16 +241,22 @@ p_file remplir_file_largeur (p_arbre a){
     enfile(aFaire, a->f_droite);
 
     //pour chaque noeud a parcourir on ajoute les enfants dans result
+		// printf("okokokokok\n");
   while (!fileVide(aFaire)){
     p_arbre tmp = defile(aFaire);
     if(tmp->f_gauche == NULL && tmp->f_droite == NULL){
+			// printf("01\n");
       enfile(resultat, tmp);
+			// printf("02\n");
     }else{
+			// printf("03\n");
       if(tmp->f_gauche != NULL)
         enfile(aFaire, tmp->f_gauche);
+			// printf("04\n");
       if(tmp->f_droite != NULL)
         enfile(aFaire, tmp->f_droite);
-    }
+			// printf("05\n");
+		}
   }
   return resultat;
 }
@@ -247,7 +272,7 @@ void trier_sequence(p_file n){
     //si ce n'est pas le premier, on les switch
     if(id_max>n->tete){
       int caract_tmp = n->T[n->tete]->caractere;
-      float poids_tmp = n->T[n->tete]->poids;
+      double poids_tmp = n->T[n->tete]->poids;
       n->T[n->tete]->caractere = n->T[id_max]->caractere;
       n->T[n->tete]->poids = n->T[id_max]->poids;
       n->T[id_max]->caractere = caract_tmp;
