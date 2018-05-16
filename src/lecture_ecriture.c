@@ -5,36 +5,37 @@ int taille_ecriture;
 
 void ecrire_fichier (char *nom_fichier, lecture l, table t)
 {
-  int i = 0;
-  size_t taille = 0;
+	int i = 0;
+	// size_t taille = 0;
 
   //création et ouverture d'un fichier dont le nom est passé en paramètre
   //"w" pour write : pour écrire dedans
     // char* dir ="../examples/";
-    char* extension = ".cpr";
-    char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
+	char* extension = ".cpr";
+	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
     // strcat(nom,dir);
-    strcat(nom, nom_fichier);
-    strcat(nom, extension);
-    FILE* fichier = fopen (nom, "w+");
+	strcat(nom, nom_fichier);
+	strcat(nom, extension);
+	FILE* fichier = fopen (nom, "w+");
   //si création du fichier impossible : erreur
-  if (fichier == NULL)
-    {
-      printf ("Erreur lors de la création du fichier.\n");
-      exit(1);
-    }
-  taille = strlen(ecriture);
-  fprintf(fichier, "%i ", l.taille );
-  for(int j=0; j<ASCII; j++)
-    fprintf(fichier, "%i ",t.longueur[j]);
-  //écriture dans le fichier des données du fichier
-  printf("taille : %d\n", (int)taille );
-  while (i != taille_ecriture) {
-    fprintf (fichier, "%c", ecriture[i]);
-    i++;
+	if (fichier == NULL)
+	{
+		printf ("Erreur lors de la création du fichier.\n");
+		exit(1);
+	}
 
-  }
-  printf("Ecriture dans le fichier %s\n", nom);
+	fprintf(fichier, "%i ", l.taille );
+	for(int j=0; j<ASCII; j++)
+		fprintf(fichier, "%i ",t.longueur[j]);
+  	//écriture dans le fichier des données du fichier
+	// taille = strlen(ecriture);
+  	//printf("taille : %d\n", (int)taille );
+	while (i != taille_ecriture) {
+		fprintf (fichier, "%c", ecriture[i]);
+		i++;
+
+	}
+	printf("Ecriture dans le fichier %s\n", nom);
 
   fclose (fichier); //fermeture du fichier
   return;
@@ -117,9 +118,9 @@ void faire_donnee(p_table t, p_lecture l){
 	}
 	car = (char)car_fin;
 	*(ecriture+j) = car;
-  taille_ecriture = j;
-  printf("j : %d\n", j );
-  printf("strlen ecriture %li\n", strlen(ecriture) );
+	taille_ecriture = j;
+  // printf("j : %d\n", j );
+  // printf("strlen ecriture %li\n", strlen(ecriture) );
 
 }
 

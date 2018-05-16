@@ -1,6 +1,7 @@
 #include "arbres.h"
 #include "structure.h"
 #include "lecture_ecriture.h"
+#include "arbres_fonctions.h"
 
 p_arbre* init_tab_decomp(p_table t, int nb_car){
 	int i = 0;
@@ -174,5 +175,85 @@ p_arbre arbre_decompression(p_table t, p_lecture l){
 		}
 		anciens = nouveaux;
 	}
+	afficher_arbre(racine, 0);
 	return racine;
 }
+
+// int main(int argc, char const *argv[])
+// {
+// 	p_lecture l = malloc(sizeof(lecture));
+// 	l->char_dif = 68;
+// 	p_table t = malloc(sizeof(table));
+// 	t->longueur[10] = 6;
+// 	t->longueur[32] = 3;
+// 	t->longueur[45] = 10;
+// 	t->longueur[50] = 12;
+// 	t->longueur[51] = 13;
+// 	t->longueur[53] = 13;
+// 	t->longueur[65] = 10;
+// 	t->longueur[66] = 13;
+// 	t->longueur[67] = 8;
+// 	t->longueur[68] = 10;
+// 	t->longueur[69] = 8;
+// 	t->longueur[70] = 12;
+// 	t->longueur[72] = 13;
+// 	t->longueur[73] = 10;
+// 	t->longueur[74] = 10;
+// 	t->longueur[76] = 8;
+// 	t->longueur[77] = 10;
+// 	t->longueur[78] = 11;
+// 	t->longueur[80] = 9;
+// 	t->longueur[81] = 12;
+// 	t->longueur[82] = 12;
+// 	t->longueur[83] = 10;
+// 	t->longueur[84] = 9;
+// 	t->longueur[85] = 12;
+// 	t->longueur[86] = 10;
+// 	t->longueur[88] = 13;
+// 	t->longueur[97] = 4;
+// 	t->longueur[98] = 7;
+// 	t->longueur[99] = 6;
+// 	t->longueur[100] = 5;
+// 	t->longueur[101] = 3;
+// 	t->longueur[102] = 7;
+// 	t->longueur[103] = 7;
+// 	t->longueur[104] = 7;
+// 	t->longueur[105] = 4;
+// 	t->longueur[106] = 9;
+// 	t->longueur[108] = 4;
+// 	t->longueur[109] = 6;
+// 	t->longueur[110] = 4;
+// 	t->longueur[111] = 5;
+// 	t->longueur[112] = 6;
+// 	t->longueur[113] = 8;
+// 	t->longueur[114] = 4;
+// 	t->longueur[115] = 4;
+// 	t->longueur[116] = 4;
+// 	t->longueur[117] = 5;
+// 	t->longueur[118] = 7;
+// 	t->longueur[120] = 9;
+// 	t->longueur[121] = 9;
+// 	t->longueur[122] = 9;
+// 	t->longueur[128] = 6;
+// 	t->longueur[137] = 12;
+// 	t->longueur[147] = 11;
+// 	t->longueur[153] = 6;
+// 	t->longueur[160] = 9;
+// 	t->longueur[162] = 11;
+// 	t->longueur[167] = 13;
+// 	t->longueur[168] = 8;
+// 	t->longueur[169] = 7;
+// 	t->longueur[170] = 10;
+// 	t->longueur[174] = 13;
+// 	t->longueur[175] = 13;
+// 	t->longueur[180] = 12;
+// 	t->longueur[185] = 13;
+// 	t->longueur[187] = 13;
+// 	t->longueur[195] = 6;
+// 	t->longueur[197] = 11;
+// 	t->longueur[226] = 6;
+
+// 	p_arbre a = arbre_decompression(t, l);
+// 	afficher_arbre(a, 0);
+// 	return 0;
+// }

@@ -12,7 +12,7 @@ p_arbre* init_tab(double f[ASCII], int nb_car, lecture l){
 
 	p_arbre *tab_noeud = malloc(nb_car * sizeof(p_arbre));
 
-	printf("nb car %d\n", nb_car);
+	//printf("nb car %d\n", nb_car);
 	for (int j = 0; j < nb_car; ++j)
 	{
 		noeud = malloc(sizeof(arbre));
@@ -29,7 +29,7 @@ p_arbre* init_tab(double f[ASCII], int nb_car, lecture l){
 			noeud->profondeur = 0;
 			noeud->poids = f[i];
 			noeud->caractere = i;
-			printf("poids: %lf    caract: %d    j: %d\n", f[i], i,  j);
+			//printf("poids: %lf    caract: %d    j: %d\n", f[i], i,  j);
 
 			tab_noeud[j] = noeud;
 			i++;
@@ -160,7 +160,7 @@ p_arbre creation_arbre(double f[ASCII], p_lecture l){
 		ajouter(&tab_noeud, nb_car, parent);
 		nb_noeud--;
 	}
-	afficher_arbre(*tab_noeud, 0);
+	// afficher_arbre(*tab_noeud, 0);
 	return *tab_noeud;
 }
 
@@ -298,4 +298,5 @@ void canoniser(p_arbre a){
   }
   //en sortie, n->tete = n->queue = taille
   //l'arbre est canoniser grace au trie
+  afficher_arbre(a, 0);
 }

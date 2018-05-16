@@ -127,3 +127,7 @@ void trier_sequence(p_file n);
 void canoniser(p_arbre a);
 
 void affciher_table(table);
+
+p_arbre arbre_decompression(p_table t, p_lecture l);
+
+void afficher_arbre(p_arbre a, int niveau);
