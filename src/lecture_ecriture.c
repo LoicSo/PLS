@@ -1,8 +1,7 @@
 #include "lecture_ecriture.h"
-#include "arbres.h"
 #include "structure.h"
 
-void ecrire_fichier (char *nom_fichier)
+void ecrire_fichier (char *nom_fichier, lecture l, table t)
 {
   int i = 0;
   size_t taille = 0;
@@ -21,6 +20,9 @@ void ecrire_fichier (char *nom_fichier)
       exit(1);
     }
   taille = strlen(ecriture);
+  fprintf(fichier, "%i ", l.taille );
+  for(int j=0; j<ASCII; j++)
+    fprintf(fichier, "%i ",t.longueur[j]);
   //écriture dans le fichier des données du fichier
   while (i != taille) {
     fprintf (fichier, "%c", ecriture[i]);
@@ -33,7 +35,7 @@ void ecrire_fichier (char *nom_fichier)
 
 
 //On initialise notre structure lecture
-void initialisation_struct(lecture* fichier){
+void initialisation_struct(p_lecture fichier){
   fichier->taille = 0;
   fichier->char_dif = 0;
   for (int i=0; i<ASCII; i++)
@@ -49,27 +51,24 @@ int longueur_fichier(FILE* f){
 }
 
 //On remplit notre structure à partir des données d'un fichier passé en paramètre
-lecture lire_fichier(FILE* f){
-  lecture fichier;
+void lire_fichier(FILE* f, p_lecture fichier){
   char caractere;
   int i=0;
-  int j;
-  initialisation_struct(&fichier);
-  fichier.taille = longueur_fichier(f);
-  fichier.donnee=malloc(sizeof(char)*fichier.taille);
+  initialisation_struct(fichier);
+  fichier->taille = longueur_fichier(f);
+  fichier->donnee=malloc(sizeof(char)*fichier->taille);
   while(!feof(f)){
     //on lit un caractère du fichier
     fscanf(f,"%c", &caractere);
     //On ajoute ce caractère dans notre structure
-    fichier.donnee[i]=caractere;
+    fichier->donnee[i]=caractere;
     //Si le caractère n'a encore jamais été lu, on incrémente la variable qui correspond au nombre de caractères différents
-    if (!fichier.occurrence[caractere])
-      fichier.char_dif++;
+    if (!fichier->occurrence[(int)caractere])
+      fichier->char_dif++;
     //On incrémente l'occurence du caractère
-    fichier.occurrence[caractere]++;
+    fichier->occurrence[(int)caractere]++;
     i++;
   }
-  return fichier;
 }
 
 
@@ -93,8 +92,8 @@ void faire_donnee(p_table t, p_lecture l){
 	while( current != '\0'){
 		entier = (int)current;
 
-		longueur =  acces_longueur(t,entier);
-		corresp = acces_correspondance(t,entier);
+		longueur =  acces_longueur(*t,entier);
+		corresp = acces_correspondance(*t,entier);
 		if(compteur_current -longueur >0){
 			car_fin += (corresp << (compteur_current -longueur));
 			compteur_current = compteur_current -longueur;
@@ -122,7 +121,7 @@ void faire_donnee(p_table t, p_lecture l){
 				car_fin=0;
 				compteur_current=8;
 				corresp =caractere_tmp;
-				car_fin += (caractere_tmp << compteur_current-espacement);
+				car_fin += (caractere_tmp << (compteur_current-espacement));
 				compteur_current =compteur_current -espacement;
 				k++;
 
@@ -136,20 +135,3 @@ void faire_donnee(p_table t, p_lecture l){
 	*(ecriture+j) = car;
 
 }
-
-int main_test_faire_donee(){
-	table t;
-	t.correspondance[65] = 5;
-	t.correspondance[66] = 345;
-	t.longueur[65]=3;
-	t.longueur[66]=9;
-
-	lecture l;
-	l.donnee = "BABA";
-	l.taille=4;
-
-	faire_donnee(&t,&l);
-	printf("chaine compressé :%s\n",ecriture );
-
-}
-

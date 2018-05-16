@@ -15,7 +15,7 @@ p_arbre* init_tab(float *f, int nb_car){
 	{
 		noeud = malloc(sizeof(arbre));
 
-		// On cherche les caracteres presents dans les donnees 
+		// On cherche les caracteres presents dans les donnees
 		while(i < ASCII && f[i] == 0.0)
 			i++;
 
@@ -273,31 +273,4 @@ void canoniser(p_arbre a){
   }
   //en sortie, n->tete = n->queue = taille
   //l'arbre est canoniser grace au trie
-}
-
-int main(int argc, char const *argv[])
-{
-	p_lecture l = malloc(sizeof(lecture));
-
-	frequence[0] = 0.11;
-	frequence[1] = 0.04;
-	frequence[2] = 0.1;
-	frequence[3] = 0.02;
-  	frequence[4] = 0.6;
-  	frequence[5] = 0.13;
-	for (int i = 6; i < ASCII; ++i)
-	{
-		frequence[i] = 0.0;
-	}
-	l->char_dif = 6;
-
-	p_arbre arbre;
-	arbre = creation_arbre(frequence, l);
-	afficher_arbre(arbre, 0);
-	table t = faire_table(arbre);
-	affciher_table(t);
-  	canoniser(arbre);
-  	afficher_arbre(arbre,0);
-
-	return 0;
 }
