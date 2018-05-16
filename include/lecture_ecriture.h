@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -18,6 +19,7 @@ typedef struct l{
 	int taille;
 	int char_dif;
 }lecture, *p_lecture;
+
 
 char* ecriture;
 
