@@ -5,7 +5,6 @@
 
 #ifndef ARBRE_H
 #define ARBRE_H
-#endif
 
 typedef struct a {
 	struct a *f_gauche;
@@ -24,3 +23,5 @@ typedef struct f{
   int queue, tete;
   p_arbre T[ASCII];
 } file, *p_file;
+
+#endif
