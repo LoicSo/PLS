@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef LECTURE_H
+#define LECTURE_H
 #endif
 
 #include <stdio.h>
