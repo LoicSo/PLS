@@ -10,9 +10,11 @@ void ecrire_fichier (char *nom_fichier)
   //création et ouverture d'un fichier dont le nom est passé en paramètre
   //"w" pour write : pour écrire dedans
     char* dir ="../examples/";
-    char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(dir)));
+    char* extension = ".cpr";
+    char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(dir)+strlen(extension)));
     strcat(nom,dir);
     strcat(nom, nom_fichier);
+    strcat(nom, extension);
     FILE* fichier = fopen (nom, "w+");
   //si création du fichier impossible : erreur
   if (fichier == NULL)
