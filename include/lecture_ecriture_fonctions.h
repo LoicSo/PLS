@@ -6,8 +6,10 @@
  * @details Prend les données compressées
  *
  * @param nom_fichier un tableau de caractère
+ * @param structure du fichier de départ
+ * @param table du codage
  */
-void ecrire_fichier (char *nom_fichier);
+void ecrire_fichier (char *nom_fichier, lecture l, table t);
 
 /**
  * @brief Permet d'initialiser la structure passé en paramètre
@@ -15,7 +17,7 @@ void ecrire_fichier (char *nom_fichier);
  *
  * @param fichier une typedef lecture
  */
-void initialisation_struct(lecture* fichier);
+ // void initialisation_struct(p_lecture fichier);
 
 /**
  * @brief Permet de renvoyer la longueur d'un fichier
@@ -24,16 +26,17 @@ void initialisation_struct(lecture* fichier);
  * @param f fichier de depart
  * @return la longueur du fichier
  */
-int longueur_fichier(FILE* f);
+// int longueur_fichier(char* nom);
 
 /**
  * @brief Permet d'initialisé la structure depuis un fichier
  *
  *
  * @param f fichier de départ
+ * @param l structure du fichier
  * @return une structure de lecture complete
  */
-lecture lire_fichier(FILE* f);
+// lecture lire_fichier(char** nom, p_lecture l);
 
 /**
  * @brief Permet de transcoder les caractère grace au code de Huffman

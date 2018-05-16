@@ -10,7 +10,7 @@ typedef struct a {
 	struct a *f_gauche;
 	struct a *f_droite;
 	int profondeur;
-	float poids;
+	double poids;
 	int caractere;
 }arbre, *p_arbre;
 

@@ -10,7 +10,7 @@
  *
  * @return un tableau de pointeur d'arbre
  */
-p_arbre* init_tab(float *f, int nb_car);
+p_arbre* init_tab(double *f, int nb_car);
 
 /**
  * @brief Permet de renvoyer le pointeur d'abre avec la plus petite fréquence.
@@ -80,7 +80,7 @@ void ajouter(p_arbre **tab_noeud, int nb_car, p_arbre noeud);
  *
  * @return Un pointeur de noeud sur la racine
  */
-p_arbre creation_arbre(float *f, p_lecture l);
+p_arbre creation_arbre(double *f, p_lecture l);
 
 /**
  * @brief Permet de trouver une feuille et de modifier la table en conséquence
@@ -125,3 +125,5 @@ void trier_sequence(p_file n);
  * @param a Arbre a canoniser
  */
 void canoniser(p_arbre a);
+
+void affciher_table(table);

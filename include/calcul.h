@@ -12,13 +12,13 @@
 #define CALCUL_H
 
 
-float frequence[ASCII];
+
 
 /**
  * @brief Permet d'initialisé la fréquence a 0
  *
  */
-void initialiser();
+void initialiser(double frequence[ASCII]);
 
 
 /**
@@ -27,5 +27,5 @@ void initialiser();
  *
  * @param fichier structure lecture complete
  */
-void calcul_frequence(lecture l);
+void calcul_frequence(double frequence[ASCII], lecture l);
 #endif
