@@ -62,3 +62,4 @@ lecture lire_fichier(FILE* f);
 void faire_donnee(p_table t, p_lecture l);
 
 
+

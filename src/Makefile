@@ -1,7 +1,7 @@
 CC = gcc
 INCDIR = ../include
-LIBDIR = ../../lib
-EXDIR = ../../Exemples
+LIBDIR = ../lib
+EXDIR = ../Exemples
 CFLAGS = -fPIC -Wall -I$(INCDIR) -g 
 EXEC = compresseur
 OBJS = main.o arbres.o calculs.o lecture_ecriture.o structure.o

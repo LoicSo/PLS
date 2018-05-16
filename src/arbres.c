@@ -4,7 +4,9 @@
 #include "calcul.h"
 #include "structure.h"
 
-p_arbre* init_tab(float* f, int nb_car){
+
+/* Initialisation du tableau de noeud avec toutes les feuilles */
+p_arbre* init_tab(float *f, int nb_car){
 	int i = 0;
 	p_arbre noeud;
 
@@ -14,9 +16,11 @@ p_arbre* init_tab(float* f, int nb_car){
 	{
 		noeud = malloc(sizeof(arbre));
 
+		// On cherche les caracteres presents dans les donnees 
 		while(i < ASCII && f[i] == 0.0)
 			i++;
 
+		// On creer une feuille pour chaque caractere
 		if (i < ASCII)
 		{
 			noeud->f_gauche = NULL;
@@ -32,6 +36,7 @@ p_arbre* init_tab(float* f, int nb_car){
 	return tab_noeud;
 }
 
+// On cherche le noeud avec la frequence la plus basse
 p_arbre mini(p_arbre tab_noeud[], int nb_car){
 	float min = 1.0;
 	p_arbre res;
@@ -49,6 +54,7 @@ p_arbre mini(p_arbre tab_noeud[], int nb_car){
 	return res;
 }
 
+// On supprime le noeud dans le tableau
 void supprimer(p_arbre **tab_noeud, p_arbre noeud, int nb_car){
 	for (int i = 0; i < nb_car; ++i)
 	{
@@ -59,6 +65,7 @@ void supprimer(p_arbre **tab_noeud, p_arbre noeud, int nb_car){
 	}
 }
 
+// Indique si le noeud est une feuille
 int est_feuille(p_arbre noeud){
 	return(noeud->f_droite == NULL && noeud->f_gauche == NULL);
 }
@@ -71,9 +78,11 @@ void incrementer_prof(p_arbre noeud){
 	}
 }
 
+// On creer le noeud parent des noeuds gauche et droite
 p_arbre creer_parent(p_arbre gauche, p_arbre droite){
 	p_arbre parent = malloc(sizeof(arbre));
 
+	// On met les feuilles le plus à droite possible
 	if(est_feuille(gauche)){
 		parent->f_droite = gauche;
 		parent->f_gauche = droite;
@@ -90,6 +99,7 @@ p_arbre creer_parent(p_arbre gauche, p_arbre droite){
 	return parent;
 }
 
+// On ajoute le noeud dans le tableau
 void ajouter(p_arbre **tab_noeud, int nb_car, p_arbre noeud){
 	int i = 0;
 	while(i < nb_car && (*tab_noeud)[i] != NULL)
@@ -97,6 +107,8 @@ void ajouter(p_arbre **tab_noeud, int nb_car, p_arbre noeud){
 	if(i < nb_car)
 		(*tab_noeud)[i] = noeud;
 }
+
+// Creation de l'arbre de Huffman
 
 p_arbre creation_arbre(float *f, p_lecture l){
 	int nb_car = char_dif(*l);
@@ -107,11 +119,15 @@ p_arbre creation_arbre(float *f, p_lecture l){
 	p_arbre gauche, droite, parent;
 
 	while (nb_noeud > 1){
+		// On recupere les deux noeuds avec les frequences les plus faible
 		gauche = mini(tab_noeud, nb_car);
+		// Et on les supprime du tableau
 		supprimer(&tab_noeud, gauche, nb_car);
 		droite = mini(tab_noeud, nb_car);
 		supprimer(&tab_noeud, droite, nb_car);
+		// On cree le noeud parent
 		parent = creer_parent(gauche, droite);
+		// Et on l'ajoute au tableau
 		ajouter(&tab_noeud, nb_car, parent);
 		nb_noeud--;
 	}
@@ -140,6 +156,7 @@ void afficher_arbre (p_arbre a, int niveau)
 	}
 	return ;
 }
+
 
 void trouver_feuille(table *t, p_arbre a, int valeur){
 	//Fonction qui permet de trouver une feuille et de modifier la correspondance et la longueur de la feuille 
@@ -264,7 +281,6 @@ void canoniser(p_arbre a){
   //en sortie, n->tete = n->queue = taille
   //l'arbre est canoniser grace au trie
 }
-
 // int main(int argc, char const *argv[])
 // {
 // 	frequence f;
