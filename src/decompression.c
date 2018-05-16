@@ -32,6 +32,7 @@ p_arbre* init_tab_decomp(p_table t, int nb_car){
 	return tab_noeud;
 }
 
+// Tri par insertion du tableau de noeud par profondeur croissante
 void trier_longueur(p_arbre **tab_noeud, int nb_car){
 	int i, j;
 	int long_en_cours, char_en_cours;
@@ -79,6 +80,7 @@ void trier_longueur(p_arbre **tab_noeud, int nb_car){
 // 	}
 // }
 
+// Retourne un tableau avec les noeuds a la profondeur p
 p_arbre* symbole(p_arbre* tab_noeud, int longueur, int nb_car, int* nb_symb){
 	int tete = 0;
 	int queue = 0;
@@ -100,6 +102,7 @@ p_arbre* symbole(p_arbre* tab_noeud, int longueur, int nb_car, int* nb_symb){
 	return symb;
 }
 
+// Creer les noeuds fils de ceux de anciens qui ne sont pas de feuille
 p_arbre* creer_nouveaux(p_arbre* anciens, int *taille){
 	int i = 0;
 	int j = 0;
