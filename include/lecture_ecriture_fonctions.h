@@ -46,3 +46,5 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t);
  * @param l la structure lecture
  */
 void faire_donnee(p_table t, p_lecture l);
+
+void lire_fichier(char** nom, p_lecture fichier);

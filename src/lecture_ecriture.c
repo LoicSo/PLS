@@ -3,6 +3,64 @@
 
 int taille_ecriture;
 
+//On initialise notre structure lecture
+void initialisation_struct(p_lecture fichier){
+	fichier->taille = 0;
+	fichier->char_dif = 0;
+	for (int i=0; i<ASCII; i++)
+		fichier->occurrence[i]=0;
+}
+
+//Renvoie le nombre de caractère du fichier
+int longueur_fichier(char** nom){
+	FILE* f=fopen(*nom,"r");
+	if (f == NULL)
+	{
+		printf ("Erreur lors de l'ouverture du fichier.\n");
+		exit(EXIT_FAILURE);
+	}
+	int taille=0;
+	while((fgetc(f)) != EOF){
+		taille++;
+		// printf("%c",c );
+	}
+	fclose(f);
+	return taille;
+}
+
+//On remplit notre structure à partir des données d'un fichier passé en paramètre
+void lire_fichier(char** nom, p_lecture fichier){
+	unsigned char caractere;
+	unsigned int entier;
+	int i=0;
+	
+	//printf("%s\n",*nom );
+	
+	initialisation_struct(fichier);
+	//printf("%s\n",*nom );
+
+	fichier->taille = longueur_fichier(nom);
+	//printf("%i\n", fichier->taille);
+
+	fichier->donnee=malloc(sizeof(char)*fichier->taille);
+	FILE* f = fopen(*nom,"r");
+	while(!feof(f)){
+    //on lit un caractère du fichier
+		fscanf(f,"%c", (char*)&entier);
+		caractere = (char)entier;
+    //On ajoute ce caractère dans notre structure
+		fichier->donnee[i]=caractere;
+    //Si le caractère n'a encore jamais été lu, on incrémente la variable qui correspond au nombre de caractères différents
+		if (fichier->occurrence[(int)caractere] == 0)
+			fichier->char_dif++;
+    //On incrémente l'occurence du caractère
+		fichier->occurrence[(int)caractere]++;
+		i++;
+	}
+	//printf("char dif : %d\n", fichier->char_dif);
+	fclose(f);
+}
+
 void ecrire_fichier (char *nom_fichier, lecture l, table t)
 {
 	int i = 0;
@@ -40,13 +98,6 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
   fclose (fichier); //fermeture du fichier
   return;
 }
-
-
-
-
-
-
-
 
 void faire_donnee(p_table t, p_lecture l){
 	int i=0;
