@@ -1,6 +1,7 @@
 #include "lecture_ecriture.h"
 #include "structure.h"
 #include "pretraitement.h"
+#include "arbres_fonctions.h"
 
 #define TAILLE_CHAR 8
 
@@ -67,6 +68,46 @@ void lire_fichier(char** nom, p_lecture fichier){
 	fclose(f);
 }
 
+// void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
+
+// 	FILE* f = fopen(*nom_fichier, "r");
+// 	if(f == NULL){
+// 		printf("erreur lors de l'ouverture du fichier");
+// 		exit(EXIT_FAILURE);
+// 	}
+
+// 	int j = 0;	// Pour initialisation des donnees
+// 	int l;	//sert pour la longueur du code de chaque lettre
+
+// 	initialisation_struct(lect);
+//   //on écrit le nombre de caract
+// 	fscanf(f,"%d", &(lect->taille));
+//   //on remplie le tableau longueur dans la structure table
+
+// 	for(int i = 0; i<ASCII && !feof(f); i++){
+// 		fscanf(f,"%d",&l);
+// 		lect->char_dif += ((l != 0) ?1 :0);
+// 		modifier_longueur(t, i, l);
+// 		modifier_correspondance(t, i, 0);
+// 	}
+
+//   //remplissage des donnees
+// 	lect->donnee = malloc(sizeof(char) * taille(*lect));
+
+// 	while(!feof(f)){
+// 		fscanf(f, "%c", &(lect->donnee[j]));
+// 		// printf("%c", lect->donnee[j]);
+// 		j++;
+// 	}
+
+// 	fclose(f);
+// }
+
+/*
+lecture de l'entete
+remplis la lecture : taille et donnees
+remplis la table  : longueur
+*/
 void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 
 	FILE* f = fopen(*nom_fichier, "r");
@@ -75,30 +116,52 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 		exit(EXIT_FAILURE);
 	}
 
-	int j = 0;	// Pour initialisation des donnees
-	int l;	//sert pour la longueur du code de chaque lettre
+	int l;//sert pour la longueur de chaque lettre
+	int prec = -2;//sert pour le RLE, -2 n'est pas un caractère
+	int j; //car on commence avec le caractere precedent le nombre d'occurence
+	int occur;
+	int i = 0;
 
 	initialisation_struct(lect);
   //on écrit le nombre de caract
 	fscanf(f,"%d", &(lect->taille));
-  //on remplie le tableau longueur dans la structure table
+	printf("taille : %d\n", lect->taille);
 
-	for(int i = 0; i<ASCII && !feof(f); i++){
-		fscanf(f,"%d",&l);
-		lect->char_dif += ((l != 0) ?1 :0);
-		modifier_longueur(t, i, l);
-		modifier_correspondance(t, i, 0);
-	}
+	//on remplie le tableau longueur dans la structure table
+	// for(int i = 0; i<ASCII && !feof(f); i++){
+	// 	fscanf(f,"%d",&l);
+	// 	lect->char_dif += ((l != 0) ?1 :0);
+	// 	modifier_longueur(t, i, l);
+	// 	modifier_correspondance(t, i, 0);
+	// }
+	while(i<ASCII && !feof(f)){
+    j = 0; //parcours pour RLE
+    occur = 0; //
+    fscanf(f,"%d",&l);
+		//Cas RLE
+		if(prec == l){
+      fscanf(f,"%d",&occur); //récupère le nombre d'occurence du char
+    }
+
+		while(j<=occur){
+			lect->char_dif += (l!=0) ? 1 : 0;
+	 		 modifier_longueur(t, i, l);
+	   		 modifier_correspondance(t, i, 0);
+			j++;//parcours des occurences
+			i++;//parcours la table
+		}
+		prec = l;
+  }
+  fseek(f, 1, SEEK_CUR); // on saute l'espace de fin d'entete
+	printf("Affichage de la table après lecture de l'entete\n");
+	affciher_table(*t);
 
   //remplissage des donnees
-	lect->donnee = malloc(sizeof(char) * taille(*lect));
-
+	lect->donnee = malloc(taille(*lect));
+	i = 0;
 	while(!feof(f)){
-		fscanf(f, "%c", &(lect->donnee[j]));
-		// printf("%c", lect->donnee[j]);
-		j++;
+		fscanf(f, "%c", &(lect->donnee[i++]));
 	}
-
 	fclose(f);
 }
 

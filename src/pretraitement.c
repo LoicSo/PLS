@@ -1,5 +1,6 @@
 #include "lecture_ecriture.h"
-#include "arbres.h"
+// #include "arbres.h"
+#include "arbres_fonctions.h"
 
 
 
@@ -25,20 +26,47 @@ char* int_to_char(int entier){
 
 
 char* faire_entete_RLE(p_table p){
+	affciher_table(*p);
 	int cmp =0;
 	int temp =-1;
 	int j=0;
-	int deja_deux_caractere=0;
+	int i=0;
 	char* buffer = malloc(sizeof(char)*4);
 
-	char* entete = malloc(sizeof(char)*(ASCII+4));
-	for(int i=0; i<ASCII; i++){
-		if (p->longueur[i] == temp ){
-			if(deja_deux_caractere){
+	char* entete = malloc(sizeof(char)*(2*ASCII+4));
+	while(i<ASCII){
+		if(i>180){
+			printf("caract : %d        %d\n", p->longueur[i], i );
+		}
+		if (p->longueur[i] == temp){
+			i++;
+			while(p->longueur[i] == temp && i<ASCII){
+				if(i>180){
+					printf("caract : %d        %d\n", p->longueur[i], i );
+				}
+				i++;
 				cmp++;
 			}
-			else{
-				deja_deux_caractere =1;
+			strcat(buffer, int_to_char(temp));
+			strcat(entete, buffer);
+			j+=strlen(buffer);
+			*(entete+j)= ' ';
+			j++;
+			free(buffer);
+			buffer = malloc(sizeof(char)*4);
+
+			strcat(buffer, int_to_char(cmp));
+			strcat(entete, buffer);
+			j+=strlen(buffer);
+			*(entete+j)= ' ';
+			j++;
+			free(buffer);
+			buffer = malloc(sizeof(char)*4);
+			cmp=0;
+			if(i>180){
+				printf("caract : %d        %d\n", p->longueur[i], i );
+			}
+			if(i<ASCII){
 				strcat(buffer, int_to_char(p->longueur[i]));
 				strcat(entete, buffer);
 				j+=strlen(buffer);
@@ -48,19 +76,9 @@ char* faire_entete_RLE(p_table p){
 				buffer = malloc(sizeof(char)*4);
 			}
 
+
 		}
 		else{
-			if(cmp>0){
-				strcat(buffer, int_to_char(cmp));
-				strcat(entete, buffer);
-				j+=strlen(buffer);
-				*(entete+j)= ' ';
-				j++;
-				free(buffer);
-				buffer = malloc(sizeof(char)*4);
-				cmp=0;
-				deja_deux_caractere=0;
-			}
 			strcat(buffer, int_to_char(p->longueur[i]));
 			strcat(entete, buffer);
 			j+=strlen(buffer);
@@ -71,6 +89,7 @@ char* faire_entete_RLE(p_table p){
 
 		}
 		temp = p->longueur[i];
+		i++;
 	}
 	if(cmp >0){
 		strcat(buffer, int_to_char(cmp));
@@ -79,6 +98,7 @@ char* faire_entete_RLE(p_table p){
 		*(entete+j)= ' ';
 		j++;
 	}
+	printf("entete %s\n", entete );
 	return entete;
 
 }

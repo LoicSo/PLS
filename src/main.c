@@ -80,6 +80,10 @@ void decompression (char **nom_fichier){
 
   //lire_entete
 	lire_entete(nom_fichier, l, t);
+        affciher_table(*t);
+      printf("%s\n",l->donnee );
+      printf("%li\n",strlen(l->donnee) );
+      printf("%d\n", l->taille );
 
 	// arbre
 	a = arbre_decompression(t, l);
