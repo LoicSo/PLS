@@ -16,6 +16,13 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 	char* extension = ".cpr";
 	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
     // strcat(nom,dir);
+	size_t taille = 0;
+
+  //création et ouverture d'un fichier dont le nom est passé en paramètre
+  //"w" pour write : pour écrire dedans
+	char* dir ="../examples/";
+	char* extension = ".cpr";
+	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
 	strcat(nom, nom_fichier);
 	strcat(nom, extension);
 	FILE* fichier = fopen (nom, "w+");
@@ -25,8 +32,6 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 		printf ("Erreur lors de la création du fichier.\n");
 		exit(1);
 	}
-
-
 	fprintf(fichier, "%i ", l.taille );
 	for(int j=0; j<ASCII; j++)
 		fprintf(fichier, "%i ",t.longueur[j]);
@@ -36,12 +41,27 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 	while (i != taille_ecriture) {
 		fprintf (fichier, "%c", ecriture[i]);
 		i++;
-
 	}
 	printf("Ecriture dans le fichier %s\n", nom);
 
   fclose (fichier); //fermeture du fichier
   return;
+
+//On initialise notre structure lecture
+  void initialisation_struct(lecture* fichier){
+  	fichier->taille = 0;
+  	fichier->char_dif = 0;
+  	for (int i=0; i<ASCII; i++)
+  		fichier->occurrence[i]=0;
+  }
+//Renvoie le nombre de caractère du fichier
+  int longueur_fichier(FILE* f){
+  	int taille;
+  	fseek(f,0,SEEK_END);
+  	taille = ftell(f);
+  	rewind(f);
+  	return taille;
+  }
 }
 
 void faire_donnee(p_table t, p_lecture l){
@@ -130,6 +150,7 @@ ferme le fichier
 */
 
 
+
 // <<<<<<< HEAD
 // void lire_entete(FILE* f, p_lecture lect, p_table t){
 // 	initialisation_struct(lect);
@@ -146,46 +167,56 @@ ferme le fichier
 // =======
 
 
-/*void lire_entete(FILE* f, p_lecture lect, p_table t){
-  initialisation_struct(lect);
-  //on écrit le nombre de caract
-  fscanf(f,"%d", &(lect->taille));
-  //on remplie le tableau longueur dans la structure table
-  int l;//sert pour la longueur de chaque lettre
-  for(int i = 0; i<ASCII && !feof(f); i++){
-    fscanf(f,"%c",&l);
-    modifier_longueur(&t, i, l);
-		modifier_correspondance(&t, i, 0);
->>>>>>> c2f8149052b211af84f3f48e7f003e3771b4b350
-  }
-  //remplissage des donnees
-  p_lecture->donnee = malloc(taille(&l));
-  int i = 0;
-  while(!feof(f)){
-<<<<<<< HEAD
-  	fscanf(f, "%c", p_lecture->donnee[i++]);
-  }
-}
+// void lire_entete(FILE* f, p_lecture lect, p_table t){
+//   initialisation_struct(lect);
+//   //on écrit le nombre de caract
+//   fscanf(f,"%d", &(lect->taille));
+//   //on remplie le tableau longueur dans la structure table
+//   int l;//sert pour la longueur de chaque lettre
+//   for(int i = 0; i<ASCII && !feof(f); i++){
+//     fscanf(f,"%c",&l);
+//     modifier_longueur(&t, i, l);
+// 		modifier_correspondance(&t, i, 0);
+// >>>>>>> c2f8149052b211af84f3f48e7f003e3771b4b350
+// =======
+// void lire_entete(FILE* f, p_lecture lect, p_table t){
+// 	initialisation_struct(lect);
+//   //on écrit le nombre de caract
+// 	fscanf(f,"%d", &(p_lecture->taille));
+//   //on remplie le tableau longueur dans la structure table
+//   int l;//sert pour la longueur de chaque lettre
+//   for(int i = 0, i<ASCII && !feof(f), i++){
+//   	fscanf(f,"%c",&l);
+//   	modifier_longueur(&t, i, l);
+//   	modifier_correspondance(&t, i, 0);
+// >>>>>>> guillaume
+//   }
+//   //remplissage des donnees
+//   p_lecture->donnee = malloc(taille(&l));
+//   int i = 0;
+//   while(!feof(f)){
+//   	fscanf(f, "%c", p_lecture->donnee[i++]);
+//   }
+// }
 
 
 
 
-int main_test_faire_donee(){
-	table t;
-	t.correspondance[65] = 5;
-	t.correspondance[66] = 345;
-	t.longueur[65]=3;
-	t.longueur[66]=9;
+// int main_test_faire_donee(){
+// 	table t;
+// 	t.correspondance[65] = 5;
+// 	t.correspondance[66] = 345;
+// 	t.longueur[65]=3;
+// 	t.longueur[66]=9;
 
-	lecture l;
-	l.donnee = "BABA";
-	l.taille=4;
+// 	lecture l;
+// 	l.donnee = "BABA";
+// 	l.taille=4;
 
-	faire_donnee(&t,&l);
-	printf("chaine compressé :%s\n",ecriture );
+// 	faire_donnee(&t,&l);
+// 	printf("chaine compressé :%s\n",ecriture );
 
-}
-
+// }
 
 
 int prendre_byte(char current, int i){
@@ -229,11 +260,3 @@ void decripter_donnee(p_arbre a, p_lecture l){
 	
 	return;
 }
-
-
-=======
-    fscanf(f, "%c", lect->donnee[i++]);
-  }
-}
-*/
->>>>>>> c2f8149052b211af84f3f48e7f003e3771b4b350
