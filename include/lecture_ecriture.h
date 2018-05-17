@@ -15,13 +15,13 @@
 
 
 typedef struct l{
-	char* donnee;
+	unsigned char* donnee;
 	int occurrence[ASCII];
 	int taille;
 	int char_dif;
 }lecture, *p_lecture; 
 
 
-char* ecriture;
+unsigned char* ecriture;
 
 #endif

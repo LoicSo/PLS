@@ -101,33 +101,30 @@ void trouver_feuille(table *t, p_arbre a, int valeur);
  */
 table faire_table(p_arbre a);
 
-/**
- * @brief Permet de remplir une file a partir d'un arbre
- * @details [long description]
- *
- * @param a Le noeud pointant sur la racine
- * @return La file correspondante
- */
-p_file remplir_file_largeur (p_arbre a);
 
 /**
- * @brief Permet de trier la séquence de noeud sur la même profondeur en vue de canoniser l'arbre
- * @details [long description]
- *
- * @param n La file a trier
+ * @brief Permet d'afficher une table mis en paramètre
+ * 
+ * 
+ * @param  Une table
  */
-void trier_sequence(p_file n);
-
-/**
- * @brief Permet de caoniser un arbre
- * @details Création du file, puis trier la file et récupération d'un arbre canonique
- *
- * @param a Arbre a canoniser
- */
-void canoniser(p_arbre a);
-
 void affciher_table(table);
 
+/**
+ * @brief Permet de réalisé un arbre canonisé
+ * 
+ * 
+ * @param t La table d'un arbre non cononisé
+ * @param l  Une structure lecture 
+ * @return Un arbre canonisé
+ */
 p_arbre arbre_decompression(p_table t, p_lecture l);
 
+/**
+ * @brief Permet d'afficher un arbre mis en paramètre
+ * 
+ * 
+ * @param a Un arbre
+ * @param niveau la profondeur duquel on veut afficher l'arbre 
+ */
 void afficher_arbre(p_arbre a, int niveau);
