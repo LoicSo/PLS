@@ -9,7 +9,7 @@
  * @param structure du fichier de départ
  * @param table du codage
  */
-void ecrire_fichier (char *nom_fichier, lecture l, table t);
+void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression);
 
 /**
  * @brief Permet d'initialiser la structure passé en paramètre
@@ -46,3 +46,9 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t);
  * @param l la structure lecture
  */
 void faire_donnee(p_table t, p_lecture l);
+
+void lire_fichier(char** nom, p_lecture fichier);
+
+void lire_entete(char **nom_fichier, p_lecture lect, p_table t);
+
+void decripter_donnee(p_arbre a, p_lecture l);
