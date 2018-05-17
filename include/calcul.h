@@ -3,22 +3,29 @@
 #define LECTURE_H
 #endif
 
-#ifndef CALCUL_H
-#define CALCUL_H
+#ifndef STRUCTURE_H
+#include "structure.h"
+#define STRUCTURE_H
 #endif
 
-float frequence[ASCII];
+#ifndef CALCUL_H
+#define CALCUL_H
+
+
+
 
 /**
  * @brief Permet d'initialisé la fréquence a 0
- * 
+ *
  */
-void initialiser();
+void initialiser(double frequence[ASCII]);
+
 
 /**
  * @brief Permet de calculer les fréquence a partir de la structure lecture
- * 
- * 
+ *
+ *
  * @param fichier structure lecture complete
  */
-void calcul_frequence(lecture fichier);
+void calcul_frequence(double frequence[ASCII], lecture l);
+#endif

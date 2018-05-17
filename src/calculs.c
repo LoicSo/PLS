@@ -1,18 +1,22 @@
 #include "calcul.h"
-#include <stdio.h>
+
 
 //initialise le tableau de fréquence à 0
-void initialiser() {
-    for (int i=0; i<ASCII; i++) {
-        frequence[i] = 0;
-    }
+void initialiser(double frequence[ASCII]) {
+	for (int i=0; i<ASCII; i++) {
+		frequence[i] = 0;
+	}
 }
 
 //calcul des fréquences de la structure lecture
 //met à jour le tableau de fréquence
-void calcul_frequence(lecture fichier) {
-   initialiser();
-   for (int i=0; i<ASCII; i++) {
-       frequence[i] = (float)acces_occurrence(f,i) / taille(f);
-   }
+void calcul_frequence(double frequence[ASCII], lecture l) {
+	initialiser(frequence);
+	for (int i=0; i<ASCII; i++) {
+		frequence[i] = (double)acces_occurrence(l,i) / taille(l);
+		// if(acces_occurrence(l,i)){
+		// 	printf("frequence : %lf      %d\n", frequence[i], i);
+		// }
+	}
+
 }
