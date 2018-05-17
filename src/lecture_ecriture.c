@@ -1,5 +1,6 @@
 #include "lecture_ecriture.h"
 #include "structure.h"
+#include "pretraitement.h"
 
 #define TAILLE_CHAR 8
 
@@ -80,7 +81,6 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 	initialisation_struct(lect);
   //on écrit le nombre de caract
 	fscanf(f,"%d", &(lect->taille));
-	printf("taille : %d\n", lect->taille);
   //on remplie le tableau longueur dans la structure table
 
 	for(int i = 0; i<ASCII && !feof(f); i++){
@@ -158,17 +158,21 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression)
 	}
 
 	if(!decompression){
-   		// ecriture du nombre de caractere
+
+  //  		ecriture du nombre de caractere
 		fprintf(fichier, "%i ", taille(l) );
 
-   		// ecriture de la table de longueur
-		for(int j=0; j<ASCII; j++)
-			fprintf(fichier, "%i ",acces_longueur(t, j));
+  //  		// ecriture de la table de longueur
+		// for(int j=0; j<ASCII; j++)
+		// 	fprintf(fichier, "%i ",acces_longueur(t, j));
+		char* table = faire_entete_RLE(&t);
+		fputs(table,fichier);
 	}
 
   	//écriture dans le fichier des données du fichier
+
 	while (i != taille_ecriture) {
-		fprintf (fichier, "%c", ecriture[i]);
+		fputc(ecriture[i],fichier);
 		i++;
 	}
 	printf("Ecriture dans le fichier %s\n", nom);

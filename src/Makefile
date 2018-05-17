@@ -2,9 +2,9 @@ CC = gcc
 INCDIR = ../include
 LIBDIR = ../lib
 EXDIR = ../Exemples
-CFLAGS = -fPIC -Wall -I$(INCDIR) -g
+CFLAGS = -fPIC -Wall -I$(INCDIR) -g -lm
 EXEC = compresseur
-OBJS = main.o arbres.o calculs.o lecture_ecriture.o structure.o decompression.o
+OBJS = main.o arbres.o calculs.o lecture_ecriture.o structure.o decompression.o pretraitement.o
 
 all: $(EXEC) libcompresseur.a libcompresseur.so
 
