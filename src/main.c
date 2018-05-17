@@ -2,7 +2,6 @@
 #include "arbres_fonctions.h"
 #include "calcul.h"
 
-
 /*
 incrémente les options possibles
 Ouvre le fichier en lecture

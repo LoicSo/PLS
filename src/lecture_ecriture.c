@@ -1,6 +1,8 @@
 #include "lecture_ecriture.h"
 #include "structure.h"
 
+#define TAILLE_CHAR 8
+
 int taille_ecriture;
 
 //On initialise notre structure lecture
@@ -72,6 +74,13 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 	char* extension = ".cpr";
 	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
     // strcat(nom,dir);
+	size_t taille = 0;
+
+  //création et ouverture d'un fichier dont le nom est passé en paramètre
+  //"w" pour write : pour écrire dedans
+	char* dir ="../examples/";
+	char* extension = ".cpr";
+	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
 	strcat(nom, nom_fichier);
 	strcat(nom, extension);
 	FILE* fichier = fopen (nom, "w+");
@@ -81,7 +90,6 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 		printf ("Erreur lors de la création du fichier.\n");
 		exit(1);
 	}
-
 	fprintf(fichier, "%i ", l.taille );
 	for(int j=0; j<ASCII; j++)
 		fprintf(fichier, "%i ",t.longueur[j]);
@@ -91,7 +99,6 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 	while (i != taille_ecriture) {
 		fprintf (fichier, "%c", ecriture[i]);
 		i++;
-
 	}
 	printf("Ecriture dans le fichier %s\n", nom);
 
@@ -119,13 +126,13 @@ void faire_donnee(p_table t, p_lecture l){
 	while( current != '\0'){
 		//on Prend le code ascii du caractère courant
 		entier = (int)current;
-    // printf("%d\n",entier );
+    		// printf("%d\n",entier );
 		//on prend la longueur du code correspondant
 		longueur =  acces_longueur(*t,entier);
-    // printf("longueur : %d\n", longueur );
+   		 // printf("longueur : %d\n", longueur );
 		//on prend l'entier correspondant au code du caractère dans l'arbre de huffman
 		corresp = acces_correspondance(*t,entier);
-    // printf("corresp : %d\n", corresp );
+   		 // printf("corresp : %d\n", corresp );
 
 		//si la longueur tiens dans 8 les bits restant du carctère a afficher
 
@@ -175,30 +182,44 @@ void faire_donnee(p_table t, p_lecture l){
 
 }
 
-//////////////// DECODAGE
-/*
-LE FICHIER MUST BE OPENED
-lecture de l'entete :
-remplis la lecture : taille et donnees
-remplis la table  : longueur
-ferme le fichier
-*/
-/*void lire_entete(FILE* f, p_lecture lect, p_table t){
-  initialisation_struct(lect);
-  //on écrit le nombre de caract
-  fscanf(f,"%d", &(lect->taille));
-  //on remplie le tableau longueur dans la structure table
-  int l;//sert pour la longueur de chaque lettre
-  for(int i = 0; i<ASCII && !feof(f); i++){
-    fscanf(f,"%c",&l);
-    modifier_longueur(&t, i, l);
-		modifier_correspondance(&t, i, 0);
-  }
-  //remplissage des donnees
-  p_lecture->donnee = malloc(taille(&l));
-  int i = 0;
-  while(!feof(f)){
-    fscanf(f, "%c", lect->donnee[i++]);
-  }
+int prendre_byte(char current, int i){
+	int res=0;
+	res &= 1<<(i-1);
+	res= res >>(i-1);
+	return res;
+
 }
-*/
+
+void traiter_bit(p_arbre *tmp, int byte, p_arbre *a, int *i ){
+	if(byte){
+		*tmp = *tmp->f_gauche;
+	}
+	else{
+		*tmp = *tmp->f_droite;
+	}
+
+	if(*tmp->f_droite == NULL && *tmp->f_gauche == NULL ){
+		*(ecriture+*i) = (char)*tmp->caractere ;
+		*i=*i+1;
+		*tmp = *a;
+	}
+}
+
+void decripter_donnee(p_arbre a, p_lecture l){
+	int byte;
+	int k=0;
+	p_arbre tmp = a;
+	char current;
+	int taille = taille(l);
+	ecriture = malloc(sizeof(char)*taille);
+
+	current =*(l->donnee+i);
+	while(current != '\0' && i<taille){
+		for(int i=TAILLE_CHAR; i >0; i--){
+			byte = prendre_byte(current, i);
+			traiter_bit(&tmp, byte, &a, &k);
+		}
+	}
+	
+	return;
+}

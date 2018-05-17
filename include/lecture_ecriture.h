@@ -18,7 +18,7 @@ typedef struct l{
 	int occurrence[ASCII];
 	int taille;
 	int char_dif;
-}lecture, *p_lecture;
+}lecture, *p_lecture; 
 
 
 char* ecriture;

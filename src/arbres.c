@@ -300,3 +300,36 @@ void canoniser(p_arbre a){
   //l'arbre est canoniser grace au trie
   afficher_arbre(a, 0);
 }
+
+
+
+
+
+// int main(int argc, char const *argv[])
+// {
+// 	frequence f;
+// 	p_lecture l = malloc(sizeof(lecture));
+
+// 	f[0] = 0.11;
+// 	f[1] = 0.04;
+// 	f[2] = 0.1;
+// 	f[3] = 0.02;
+//   f[4] = 0.6;
+//   f[5] = 0.13;
+// 	for (int i = 6; i < ASCII; ++i)
+// 	{
+// 		f[i] = 0.0;
+// 	}
+// 	l->char_dif = 6;
+
+// 	p_arbre arbre;
+// 	arbre = creation_arbre(f, l);
+// 	afficher_arbre(arbre, 0);
+// 	table t = faire_table(arbre);
+// 	affciher_table(t);
+//   canoniser(arbre);
+//   afficher_arbre(arbre,0);
+
+// 	return 0;
+// }
+
