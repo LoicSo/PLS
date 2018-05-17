@@ -46,12 +46,16 @@ void lire_fichier(char** nom, p_lecture fichier){
 	fichier->taille = longueur_fichier(nom);
 	//printf("%i\n", fichier->taille);
 
-	fichier->donnee = malloc(sizeof(char) * fichier->taille);
+	fichier->donnee = malloc(sizeof( unsigned char) * fichier->taille);
 	FILE* f = fopen(*nom,"r");
+	int j = 0;
 	while(!feof(f)){
     //on lit un caractère du fichier
-		fscanf(f, "%c", (char*)&entier);
-		caractere = (char)entier;
+		caractere =fgetc(f);
+		entier = (unsigned int )caractere;
+		// caractere = (unsigned char)entier;
+		if ( j++< 5)
+			printf("%c ------ %i\n",caractere, entier );
 
     //On ajoute ce caractère dans notre structure
 		fichier->donnee[i] = caractere;
@@ -235,7 +239,7 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression)
   	//écriture dans le fichier des données du fichier
 
 	while (i != taille_ecriture) {
-		fputc(ecriture[i],fichier);
+		fprintf(fichier, "%c",ecriture[i] );
 		i++;
 	}
 	printf("Ecriture dans le fichier %s\n", nom);
@@ -264,7 +268,7 @@ void faire_donnee(p_table t, p_lecture l){
 	int i=0;
 	int j=0;
 	// nous initialisons la taille des données à ecrire
-	ecriture = malloc(sizeof(char) * l->taille);
+	ecriture = malloc(sizeof( unsigned char) * l->taille);
 	unsigned char current =*(l->donnee+i);
 	unsigned int entier;
 	int longueur;
@@ -297,7 +301,7 @@ void faire_donnee(p_table t, p_lecture l){
 		}
 		else if(compteur_current -longueur == 0){
 			car_fin +=corresp;
-			car = (char)car_fin;
+			car = ( unsigned char)car_fin;
 			*(ecriture+j) = car;
 			j++;
 			car_fin=0;
@@ -312,7 +316,7 @@ void faire_donnee(p_table t, p_lecture l){
 				masque =(1<< espacement) -1;
 				caractere_tmp = corresp & masque;
 				car_fin += (corresp >> espacement);
-				car = (char)car_fin;
+				car = ( unsigned char)car_fin;
 				*(ecriture+j) = car;
 				j++;
 				car_fin=0;
@@ -328,7 +332,7 @@ void faire_donnee(p_table t, p_lecture l){
 		current =*(l->donnee+i);
 
 	}
-	car = (char)car_fin;
+	car = ( unsigned char)car_fin;
 	*(ecriture+j) = car;
 	taille_ecriture = j;
   // printf("j : %d\n", j );
@@ -336,7 +340,7 @@ void faire_donnee(p_table t, p_lecture l){
 
 }
 
-int prendre_byte(char current, int i){
+int prendre_byte( unsigned char current, int i){
 	int res=0;
 	res = current & (1 << (i-1));
 	res >>= (i-1);
@@ -353,7 +357,7 @@ void traiter_bit(p_arbre *tmp, int byte, p_arbre *a, int *i ){
 	}
 
 	if((*tmp)->f_droite == NULL && (*tmp)->f_gauche == NULL ){
-		*(ecriture+*i) = (char)(*tmp)->caractere ;
+		*(ecriture+*i) = ( unsigned char)(*tmp)->caractere ;
 		*i=*i+1;
 		*tmp = *a;
 	}
@@ -365,9 +369,9 @@ void decripter_donnee(p_arbre a, p_lecture l){
 	int k = 0;
 	int j = 0;
 	p_arbre tmp = a;
-	char current;
+	 unsigned char current;
 	taille_ecriture = taille(*l);
-	ecriture = malloc(sizeof(char) * taille_ecriture);
+	ecriture = malloc(sizeof( unsigned char) * taille_ecriture);
 
 	current = l->donnee[j];
 
