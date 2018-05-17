@@ -102,19 +102,3 @@ char* faire_entete_RLE(p_table p){
 	return entete;
 
 }
-
-// int main(){
-// 	table table;
-// 	for(int i=0; i<12;i++){
-// 		table.longueur[i]=0;
-// 	}
-// 	for (int i = 12; i < ASCII; i++)
-// 	 {
-// 	 	table.longueur[i]=1;
-// 	 }
-// 	// for (int i = 104; i < ASCII; ++i)
-// 	// {
-// 	// 	table->longueur[i]=0;
-// 	// }
-// 	faire_entete_RLE(&table);
-// }

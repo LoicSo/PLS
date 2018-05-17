@@ -72,41 +72,6 @@ void lire_fichier(char** nom, p_lecture fichier){
 	fclose(f);
 }
 
-// void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
-
-// 	FILE* f = fopen(*nom_fichier, "r");
-// 	if(f == NULL){
-// 		printf("erreur lors de l'ouverture du fichier");
-// 		exit(EXIT_FAILURE);
-// 	}
-
-// 	int j = 0;	// Pour initialisation des donnees
-// 	int l;	//sert pour la longueur du code de chaque lettre
-
-// 	initialisation_struct(lect);
-//   //on écrit le nombre de caract
-// 	fscanf(f,"%d", &(lect->taille));
-//   //on remplie le tableau longueur dans la structure table
-
-// 	for(int i = 0; i<ASCII && !feof(f); i++){
-// 		fscanf(f,"%d",&l);
-// 		lect->char_dif += ((l != 0) ?1 :0);
-// 		modifier_longueur(t, i, l);
-// 		modifier_correspondance(t, i, 0);
-// 	}
-
-//   //remplissage des donnees
-// 	lect->donnee = malloc(sizeof(char) * taille(*lect));
-
-// 	while(!feof(f)){
-// 		fscanf(f, "%c", &(lect->donnee[j]));
-// 		// printf("%c", lect->donnee[j]);
-// 		j++;
-// 	}
-
-// 	fclose(f);
-// }
-
 /*
 lecture de l'entete
 remplis la lecture : taille et donnees
@@ -131,36 +96,30 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 	fscanf(f,"%d", &(lect->taille));
 	printf("taille : %d\n", lect->taille);
 
-	//on remplie le tableau longueur dans la structure table
-	// for(int i = 0; i<ASCII && !feof(f); i++){
-	// 	fscanf(f,"%d",&l);
-	// 	lect->char_dif += ((l != 0) ?1 :0);
-	// 	modifier_longueur(t, i, l);
-	// 	modifier_correspondance(t, i, 0);
-	// }
-	while(i<ASCII && !feof(f)){
-    j = 0; //parcours pour RLE
-    occur = 0; //
-    fscanf(f,"%d",&l);
-		//Cas RLE
-		if(prec == l){
-      fscanf(f,"%d",&occur); //récupère le nombre d'occurence du char
-    }
 
-		while(j<=occur){
-			lect->char_dif += (l!=0) ? 1 : 0;
-	 		 modifier_longueur(t, i, l);
-	   		 modifier_correspondance(t, i, 0);
+	while(i<ASCII && !feof(f)){
+		j = 0; //parcours pour RLE
+		occur = 0; //
+		fscanf(f,"%d",&l);
+				//Cas RLE
+		if(prec == l){
+			fscanf(f,"%d",&occur); //récupère le nombre d'occurence du char
+  		}
+
+		  while(j<=occur){
+		  	lect->char_dif += (l!=0) ? 1 : 0;
+		  	modifier_longueur(t, i, l);
+		  	modifier_correspondance(t, i, 0);
 			j++;//parcours des occurences
 			i++;//parcours la table
 		}
 		prec = l;
-  }
-  fseek(f, 1, SEEK_CUR); // on saute l'espace de fin d'entete
+	}
+	fseek(f, 1, SEEK_CUR); // on saute l'espace de fin d'entete
 	printf("Affichage de la table après lecture de l'entete\n");
 	affciher_table(*t);
 
-  //remplissage des donnees
+	  //remplissage des donnees
 	lect->donnee = malloc(taille(*lect));
 	i = 0;
 	while(!feof(f)){
@@ -247,21 +206,8 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression)
   fclose (fichier); //fermeture du fichier
   return;
 }
-//On initialise notre structure lecture
-//   void initialisation_struct(lecture* fichier){
-//   	fichier->taille = 0;
-//   	fichier->char_dif = 0;
-//   	for (int i=0; i<ASCII; i++)
-//   		fichier->occurrence[i]=0;
-//   }
-// //Renvoie le nombre de caractère du fichier
-//   int longueur_fichier(FILE* f){
-//   	int taille;
-//   	fseek(f,0,SEEK_END);
-//   	taille = ftell(f);
-//   	rewind(f);
-//   	return taille;
-//   }
+
+
 
 
 void faire_donnee(p_table t, p_lecture l){
@@ -369,7 +315,7 @@ void decripter_donnee(p_arbre a, p_lecture l){
 	int k = 0;
 	int j = 0;
 	p_arbre tmp = a;
-	 unsigned char current;
+	unsigned char current;
 	taille_ecriture = taille(*l);
 	ecriture = malloc(sizeof( unsigned char) * taille_ecriture);
 
