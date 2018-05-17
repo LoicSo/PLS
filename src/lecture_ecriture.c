@@ -15,7 +15,7 @@ void initialisation_struct(p_lecture fichier){
 
 //Renvoie le nombre de caractère du fichier
 int longueur_fichier(char** nom){
-	FILE* f=fopen(*nom,"r");
+	FILE* f = fopen(*nom,"r");
 	if (f == NULL)
 	{
 		printf ("Erreur lors de l'ouverture du fichier.\n");
@@ -44,17 +44,20 @@ void lire_fichier(char** nom, p_lecture fichier){
 	fichier->taille = longueur_fichier(nom);
 	//printf("%i\n", fichier->taille);
 
-	fichier->donnee=malloc(sizeof(char)*fichier->taille);
+	fichier->donnee = malloc(sizeof(char) * fichier->taille);
 	FILE* f = fopen(*nom,"r");
 	while(!feof(f)){
     //on lit un caractère du fichier
-		fscanf(f,"%c", (char*)&entier);
+		fscanf(f, "%c", (char*)&entier);
 		caractere = (char)entier;
+
     //On ajoute ce caractère dans notre structure
-		fichier->donnee[i]=caractere;
+		fichier->donnee[i] = caractere;
+
     //Si le caractère n'a encore jamais été lu, on incrémente la variable qui correspond au nombre de caractères différents
 		if (fichier->occurrence[(int)caractere] == 0)
 			fichier->char_dif++;
+
     //On incrémente l'occurence du caractère
 		fichier->occurrence[(int)caractere]++;
 		i++;
@@ -63,39 +66,106 @@ void lire_fichier(char** nom, p_lecture fichier){
 	fclose(f);
 }
 
-void ecrire_fichier (char *nom_fichier, lecture l, table t)
+void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
+
+	FILE* f = fopen(*nom_fichier, "r");
+	if(f == NULL){
+		printf("erreur lors de l'ouverture du fichier");
+		exit(EXIT_FAILURE);
+	}
+
+	int j = 0;	// Pour initialisation des donnees
+	int l;	//sert pour la longueur du code de chaque lettre
+
+	initialisation_struct(lect);
+  //on écrit le nombre de caract
+	fscanf(f,"%d", &(lect->taille));
+	printf("taille : %d\n", lect->taille);
+  //on remplie le tableau longueur dans la structure table
+
+	for(int i = 0; i<ASCII && !feof(f); i++){
+		fscanf(f,"%d",&l);
+		lect->char_dif += ((l != 0) ?1 :0);
+		modifier_longueur(t, i, l);
+		modifier_correspondance(t, i, 0);
+	}
+
+  //remplissage des donnees
+	lect->donnee = malloc(sizeof(char) * taille(*lect));
+
+	while(!feof(f)){
+		fscanf(f, "%c", &(lect->donnee[j]));
+		// printf("%c", lect->donnee[j]);
+		j++;
+	}
+
+	fclose(f);
+}
+
+char* creer_nom_fichier(char* nom_fichier){
+	
+	char* ajout = "_decomp";
+	char* sanscpr = malloc(sizeof(char) * strlen(nom_fichier) - 4);	// .cpr = 4 caracteres
+	strncpy(sanscpr, nom_fichier, strlen(nom_fichier) - 4);
+
+	char* nom = malloc(sizeof(char) * (strlen(sanscpr) + strlen(ajout)));
+
+	char *extension;	// extension potentielle
+	extension = strrchr(sanscpr, '.');
+
+   	// Un point avec une extension 
+	if(strlen(extension) == 4){
+		char *sansext = malloc(sizeof(char) * strlen(sanscpr) - 4);	// .cpr = 4 caracteres
+		strncpy(sansext, sanscpr, strlen(sanscpr) - 4);
+
+		strcat(nom, sansext);
+		strcat(nom, ajout);
+		strcat(nom, extension);	
+	}
+   	// Un point mais pas d'extension ou pas de point
+	else{
+		strcat(nom, sanscpr);
+		strcat(nom, ajout);
+	}
+	return nom;
+}
+
+void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression)
 {
 	int i = 0;
-	// size_t taille = 0;
+	char *nom;
 
   //création et ouverture d'un fichier dont le nom est passé en paramètre
   //"w" pour write : pour écrire dedans
-    // char* dir ="../examples/";
-	char* extension = ".cpr";
-	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
-    // strcat(nom,dir);
-	size_t taille = 0;
+	if(!decompression){
+		char* extension = ".cpr";
+		nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
 
-  //création et ouverture d'un fichier dont le nom est passé en paramètre
-  //"w" pour write : pour écrire dedans
-	char* dir ="../examples/";
-	char* extension = ".cpr";
-	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
-	strcat(nom, nom_fichier);
-	strcat(nom, extension);
+		strcat(nom, nom_fichier);
+		strcat(nom, extension);
+	}
+	else{
+		nom = creer_nom_fichier(nom_fichier);
+	}
+
 	FILE* fichier = fopen (nom, "w+");
   //si création du fichier impossible : erreur
 	if (fichier == NULL)
 	{
 		printf ("Erreur lors de la création du fichier.\n");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
-	fprintf(fichier, "%i ", l.taille );
-	for(int j=0; j<ASCII; j++)
-		fprintf(fichier, "%i ",t.longueur[j]);
+
+	if(!decompression){
+   		// ecriture du nombre de caractere
+		fprintf(fichier, "%i ", taille(l) );
+
+   		// ecriture de la table de longueur
+		for(int j=0; j<ASCII; j++)
+			fprintf(fichier, "%i ",acces_longueur(t, j));
+	}
+
   	//écriture dans le fichier des données du fichier
-	// taille = strlen(ecriture);
-  	//printf("taille : %d\n", (int)taille );
 	while (i != taille_ecriture) {
 		fprintf (fichier, "%c", ecriture[i]);
 		i++;
@@ -121,9 +191,9 @@ void faire_donnee(p_table t, p_lecture l){
 
 	int espacement;
 	int masque;
-	int caractere_tmp;
+	unsigned int caractere_tmp;
 	int k;
-	while( current != '\0'){
+	while(current != '\0'){
 		//on Prend le code ascii du caractère courant
 		entier = (int)current;
     		// printf("%d\n",entier );
@@ -184,42 +254,45 @@ void faire_donnee(p_table t, p_lecture l){
 
 int prendre_byte(char current, int i){
 	int res=0;
-	res &= 1<<(i-1);
-	res= res >>(i-1);
+	res = current & (1 << (i-1));
+	res >>= (i-1);
 	return res;
 
 }
 
 void traiter_bit(p_arbre *tmp, int byte, p_arbre *a, int *i ){
 	if(byte){
-		*tmp = *tmp->f_gauche;
+		*tmp = (*tmp)->f_gauche;
 	}
 	else{
-		*tmp = *tmp->f_droite;
+		*tmp = (*tmp)->f_droite;
 	}
 
-	if(*tmp->f_droite == NULL && *tmp->f_gauche == NULL ){
-		*(ecriture+*i) = (char)*tmp->caractere ;
-		*i=*i+1;
+	if((*tmp)->f_droite == NULL && (*tmp)->f_gauche == NULL ){
+		*(ecriture+*i) = (char)(*tmp)->caractere ;
+		*i = *i+1;
 		*tmp = *a;
 	}
 }
 
 void decripter_donnee(p_arbre a, p_lecture l){
 	int byte;
-	int k=0;
+	int k = 0;
+	int j = 0;
 	p_arbre tmp = a;
 	char current;
-	int taille = taille(l);
-	ecriture = malloc(sizeof(char)*taille);
+	taille_ecriture = taille(*l);
+	ecriture = malloc(sizeof(char) * taille_ecriture);
 
-	current =*(l->donnee+i);
-	while(current != '\0' && i<taille){
-		for(int i=TAILLE_CHAR; i >0; i--){
+	current = l->donnee[j];
+
+	while(k < taille_ecriture){
+		for(int i = TAILLE_CHAR; i > 0; i--){
 			byte = prendre_byte(current, i);
 			traiter_bit(&tmp, byte, &a, &k);
 		}
+		j++;
+		current =*(l->donnee+j);
 	}
-	
 	return;
 }
