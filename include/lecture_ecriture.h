@@ -52,14 +52,14 @@ int longueur_fichier(FILE* f);
  */
 lecture lire_fichier(FILE* f);
 
-/**
- * @brief Permet de transcoder les caractère grace au code de Huffman
- * 
- * 
- * @param t la table correspondant à l'arbre de Huffman
- * @param l la structure lecture
- */
-void faire_donnee(p_table t, p_lecture l);
+// *
+//  * @brief Permet de transcoder les caractère grace au code de Huffman
+//  * 
+//  * 
+//  * @param t la table correspondant à l'arbre de Huffman
+//  * @param l la structure lecture
+ 
+// void faire_donnee(p_table t, p_lecture l);
 
 
 
