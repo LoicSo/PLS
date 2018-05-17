@@ -1,3 +1,6 @@
+/**
+ * @file lecture.c
+ */
 #include "lecture_ecriture.h"
 #include "structure.h"
 #include "pretraitement.h"
@@ -156,6 +159,14 @@ char* creer_nom_fichier(char* nom_fichier){
 	return nom;
 }
 
+/**
+ * @brief Permet d'écrire dans un fichier
+ * @details Prend les données compressées
+ *
+ * @param nom_fichier un tableau de caractère
+ * @param structure du fichier de départ
+ * @param table du codage
+ */
 void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression)
 {
 	int i = 0;
