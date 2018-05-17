@@ -16,13 +16,10 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 	char* extension = ".cpr";
 	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
     // strcat(nom,dir);
-	size_t taille = 0;
 
   //création et ouverture d'un fichier dont le nom est passé en paramètre
   //"w" pour write : pour écrire dedans
-	char* dir ="../examples/";
-	char* extension = ".cpr";
-	char *nom = malloc(sizeof(char)*(1+strlen(nom_fichier)+strlen(extension)));
+	
 	strcat(nom, nom_fichier);
 	strcat(nom, extension);
 	FILE* fichier = fopen (nom, "w+");
@@ -46,23 +43,23 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t)
 
   fclose (fichier); //fermeture du fichier
   return;
-
-//On initialise notre structure lecture
-  void initialisation_struct(lecture* fichier){
-  	fichier->taille = 0;
-  	fichier->char_dif = 0;
-  	for (int i=0; i<ASCII; i++)
-  		fichier->occurrence[i]=0;
-  }
-//Renvoie le nombre de caractère du fichier
-  int longueur_fichier(FILE* f){
-  	int taille;
-  	fseek(f,0,SEEK_END);
-  	taille = ftell(f);
-  	rewind(f);
-  	return taille;
-  }
 }
+//On initialise notre structure lecture
+//   void initialisation_struct(lecture* fichier){
+//   	fichier->taille = 0;
+//   	fichier->char_dif = 0;
+//   	for (int i=0; i<ASCII; i++)
+//   		fichier->occurrence[i]=0;
+//   }
+// //Renvoie le nombre de caractère du fichier
+//   int longueur_fichier(FILE* f){
+//   	int taille;
+//   	fseek(f,0,SEEK_END);
+//   	taille = ftell(f);
+//   	rewind(f);
+//   	return taille;
+//   }
+
 
 void faire_donnee(p_table t, p_lecture l){
 	int i=0;
@@ -229,14 +226,14 @@ int prendre_byte(char current, int i){
 
 void traiter_bit(p_arbre *tmp, int byte, p_arbre *a, int *i ){
 	if(byte){
-		*tmp = *tmp->f_gauche;
+		*tmp = (*tmp)->f_gauche;
 	}
 	else{
-		*tmp = *tmp->f_droite;
+		*tmp = (*tmp)->f_droite;
 	}
 
-	if(*tmp->f_droite == NULL && *tmp->f_gauche == NULL ){
-		*(ecriture+*i) = (char)*tmp->caractere ;
+	if((*tmp)->f_droite == NULL && (*tmp)->f_gauche == NULL ){
+		*(ecriture+*i) = (char)(*tmp)->caractere ;
 		*i=*i+1;
 		*tmp = *a;
 	}
@@ -245,13 +242,14 @@ void traiter_bit(p_arbre *tmp, int byte, p_arbre *a, int *i ){
 void decripter_donnee(p_arbre a, p_lecture l){
 	int byte;
 	int k=0;
+	int i=0;
 	p_arbre tmp = a;
 	char current;
-	int taille = taille(l);
-	ecriture = malloc(sizeof(char)*taille);
+	int taille_max= taille(*l);
+	ecriture = malloc(sizeof(char)*taille_max);
 
 	current =*(l->donnee+i);
-	while(current != '\0' && i<taille){
+	while(current != '\0' && i<taille_max){
 		for(int i=TAILLE_CHAR; i >0; i--){
 			byte = prendre_byte(current, i);
 			traiter_bit(&tmp, byte, &a, &k);
