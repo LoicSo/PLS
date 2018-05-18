@@ -38,10 +38,8 @@ int longueur_fichier(char** nom){
 //On remplit notre structure à partir des données d'un fichier passé en paramètre
 void lire_fichier(char** nom, p_lecture fichier){
 	unsigned char caractere;
-	unsigned int entier;
 	int i=0;
 	
-	printf("%s\n",*nom );
 	
 	initialisation_struct(fichier);
 	// printf("%s\n",*nom );
@@ -55,10 +53,9 @@ void lire_fichier(char** nom, p_lecture fichier){
 	while(!feof(f)){
     //on lit un caractère du fichier
 		caractere =fgetc(f);
-		entier = (unsigned int )caractere;
+		// entier = (unsigned int )caractere;
 		// caractere = (unsigned char)entier;
 		if ( j++< 5)
-			printf("%c ------ %i\n",caractere, entier );
 
     //On ajoute ce caractère dans notre structure
 		fichier->donnee[i] = caractere;
@@ -97,7 +94,6 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 	initialisation_struct(lect);
   //on écrit le nombre de caract
 	fscanf(f,"%d", &(lect->taille));
-	printf("taille : %d\n", lect->taille);
 
 
 	while(i<ASCII && !feof(f)){
@@ -120,7 +116,6 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 	}
 	fseek(f, 1, SEEK_CUR); // on saute l'espace de fin d'entete
 	printf("Affichage de la table après lecture de l'entete\n");
-	affciher_table(*t);
 
 	  //remplissage des donnees
 	lect->donnee = malloc(taille(*lect));

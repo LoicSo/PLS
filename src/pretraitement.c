@@ -26,7 +26,6 @@ char* int_to_char(int entier){
 
 
 char* faire_entete_RLE(p_table p){
-	affciher_table(*p);
 	int cmp =0;
 	int temp =-1;
 	int j=0;
@@ -35,15 +34,11 @@ char* faire_entete_RLE(p_table p){
 
 	char* entete = malloc(sizeof(char)*(2*ASCII+4));
 	while(i<ASCII){
-		if(i>180){
-			printf("caract : %d        %d\n", p->longueur[i], i );
-		}
+		
 		if (p->longueur[i] == temp){
 			i++;
 			while(p->longueur[i] == temp && i<ASCII){
-				if(i>180){
-					printf("caract : %d        %d\n", p->longueur[i], i );
-				}
+				
 				i++;
 				cmp++;
 			}
@@ -63,9 +58,7 @@ char* faire_entete_RLE(p_table p){
 			free(buffer);
 			buffer = malloc(sizeof(char)*4);
 			cmp=0;
-			if(i>180){
-				printf("caract : %d        %d\n", p->longueur[i], i );
-			}
+			
 			if(i<ASCII){
 				strcat(buffer, int_to_char(p->longueur[i]));
 				strcat(entete, buffer);
@@ -98,7 +91,6 @@ char* faire_entete_RLE(p_table p){
 		*(entete+j)= ' ';
 		j++;
 	}
-	printf("entete %s\n", entete );
 	return entete;
 
 }
