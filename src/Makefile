@@ -1,7 +1,7 @@
 CC = gcc
 INCDIR = ../include
 LIBDIR = ../lib
-EXDIR = ../Exemples
+EXDIR = ../examples
 CFLAGS = -fPIC -Wall -I$(INCDIR) -g -lm
 EXEC = compresseur
 OBJS = main.o arbres.o calculs.o lecture_ecriture.o structure.o decompression.o pretraitement.o
@@ -20,22 +20,7 @@ $(EXEC) : $(OBJS)
 %.o: %.c %.h
 	$(CC) -c $(CFLAGS) -o $@ $< -lm
 
-# structure.o: structure.c
-# 	$(CC) -c -o $@ $< $(CFLAGS)
-#
-# calculs.o: calculs.c
-# 	$(CC) -c -o $@ $< $(CFLAGS)
-#
-# lecture_ecriture.o: lecture_ecriture.c
-# 	$(CC) -c -o $@ $< $(CFLAGS)
-#
-# main.o: main.c
-# 	$(CC) -c -o $@ $< $(CFLAGS)
-#
-# arbres.o: arbres.c
-# 	$(CC) -c -o $@ $< $(CFLAGS)
-
-
 clean :
 	rm -f $(OBJS)
 	rm -f $(EXEC)
+	rm -f $(EXDIR)/*.cpr  $(EXDIR)/*_decomp*

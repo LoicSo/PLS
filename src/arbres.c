@@ -1,27 +1,24 @@
 #include <stdlib.h>
-
 #include "arbres.h"
 #include "calcul.h"
 #include "structure.h"
 
 
-/* Initialisation du tableau de noeud avec toutes les feuilles */
+// Initialisation du tableau de noeud avec toutes les feuilles
 p_arbre* init_tab(double f[ASCII], int nb_car, lecture l){
 	int i = 0;
 	p_arbre noeud;
-
 	p_arbre *tab_noeud = malloc(nb_car * sizeof(p_arbre));
 
-	//printf("nb car %d\n", nb_car);
 	for (int j = 0; j < nb_car; ++j)
 	{
 		noeud = malloc(sizeof(arbre));
 
-		// On cherche les caracteres presents dans les donnees
+		// On cherche les caractères présents dans les données
 		while(i < ASCII && acces_occurrence(l,i) == 0){
 					i++;
 		}
-		// On creer une feuille pour chaque caractere
+		// On crée une feuille pour chaque caractère
 		if (i < ASCII)
 		{
 			noeud->f_gauche = NULL;
@@ -29,7 +26,6 @@ p_arbre* init_tab(double f[ASCII], int nb_car, lecture l){
 			noeud->profondeur = 0;
 			noeud->poids = f[i];
 			noeud->caractere = i;
-			//printf("poids: %lf    caract: %d    j: %d\n", f[i], i,  j);
 
 			tab_noeud[j] = noeud;
 			i++;
@@ -38,7 +34,7 @@ p_arbre* init_tab(double f[ASCII], int nb_car, lecture l){
 	return tab_noeud;
 }
 
-// On cherche le noeud avec la frequence la plus basse
+// On cherche le noeud avec la fréquence la plus basse
 p_arbre mini(p_arbre tab_noeud[], int nb_car){
 	double min = 1.0;
 	p_arbre res;
@@ -80,7 +76,7 @@ void incrementer_prof(p_arbre noeud){
 	}
 }
 
-// On creer le noeud parent des noeuds gauche et droite
+// On crée le noeud parent des noeuds gauche et droite
 p_arbre creer_parent(p_arbre gauche, p_arbre droite){
 	p_arbre parent = malloc(sizeof(arbre));
 
@@ -111,14 +107,13 @@ void ajouter(p_arbre **tab_noeud, int nb_car, p_arbre noeud){
 }
 
 
-void afficher_arbre (p_arbre a, int niveau)
-{
   /*
-    affichage de l'arbre a
+    Affichage de l'arbre a
     on l'affiche en le penchant sur sa gauche
     la partie droite (haute) se retrouve en l'air
   */
-
+void afficher_arbre (p_arbre a, int niveau)
+{
 	int i ;
 
 	if (a != NULL)
@@ -135,7 +130,7 @@ void afficher_arbre (p_arbre a, int niveau)
 }
 
 
-// Creation de l'arbre de Huffman
+// Création de l'arbre de Huffman
 
 p_arbre creation_arbre(double f[ASCII], p_lecture l){
 	int nb_car = char_dif(*l);
@@ -146,45 +141,42 @@ p_arbre creation_arbre(double f[ASCII], p_lecture l){
 	p_arbre gauche, droite, parent;
 
 	while (nb_noeud > 1){
-		// On recupere les deux noeuds avec les frequences les plus faible
+		// On récupère les deux noeuds avec les fréquences les plus faibles
 		gauche = mini(tab_noeud, nb_car);
-		// printf("%d\n", gauche->caractere);
+
 		// Et on les supprime du tableau
 		supprimer(&tab_noeud, gauche, nb_car);
 		droite = mini(tab_noeud, nb_car);
-		// printf("%d\n", droite->caractere);
 		supprimer(&tab_noeud, droite, nb_car);
-		// On cree le noeud parent
+		// On crée le noeud parent
 		parent = creer_parent(gauche, droite);
 		// Et on l'ajoute au tableau
 		ajouter(&tab_noeud, nb_car, parent);
 		nb_noeud--;
 	}
-	// afficher_arbre(*tab_noeud, 0);
+
 	return *tab_noeud;
 }
 
 
 
-
+//Fonction qui permet de trouver une feuille et de modifier la correspondance et la longueur de la feuille
 void trouver_feuille(table *t, p_arbre a, int valeur){
-	//Fonction qui permet de trouver une feuille et de modifier la correspondance et la longueur de la feuille
 	if(a->f_gauche == NULL && a->f_gauche == NULL){
 		//C'est une feuille, modification
 		modifier_correspondance(t, a->caractere, valeur);
 		modifier_longueur(t, a->caractere, a->profondeur);
 	}else{
-		//Ce n'est pas une feuille, si on va a gauche on multiplie la valeur par 2 et nous ajouter +1
+		//Ce n'est pas une feuille, si on va à gauche on multiplie la valeur par 2 et on ajoute +1
 		trouver_feuille(t, a->f_gauche, (valeur<<1)+1);
-		//Si on va a droite on multiplie seulement la valeur par 2
+		//Si on va à droite on multiplie seulement la valeur par 2
 		trouver_feuille(t, a->f_droite, (valeur<<1));
 
 	}
 
 }
-
+//Initialisation de la table avec tous ses champs à 0
 table faire_table(p_arbre a){
-	//Initialisation de la table avec tous ses champs a 0
 	table t;
 	for (int i=0; i<ASCII; i++){
 		modifier_longueur(&t, i,0);
@@ -194,7 +186,7 @@ table faire_table(p_arbre a){
 	return t;
 }
 
-void affciher_table(table t){
+void afficher_table(table t){
 	for(int i=0; i<ASCII; i++){
 		if (acces_longueur(t, i)){
 			printf("code ascii : %d, valeur :%d, longueur : %d\n", i, acces_correspondance(t,i), acces_longueur(t,i) );

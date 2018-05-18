@@ -18,7 +18,7 @@ void initialisation_struct(p_lecture fichier){
 		fichier->occurrence[i]=0;
 }
 
-//Renvoie le nombre de caractère du fichier
+//Renvoie le nombre de caractères du fichier
 int longueur_fichier(char** nom){
 	FILE* f = fopen(*nom,"r");
 	if (f == NULL)
@@ -29,7 +29,6 @@ int longueur_fichier(char** nom){
 	int taille=0;
 	while((fgetc(f)) != EOF){
 		taille++;
-		// printf("%c",c );
 	}
 	fclose(f);
 	return taille;
@@ -40,27 +39,22 @@ void lire_fichier(char** nom, p_lecture fichier){
 	unsigned char caractere;
 	int i=0;
 	
-	
 	initialisation_struct(fichier);
-	// printf("%s\n",*nom );
 
 	fichier->taille = longueur_fichier(nom);
-	//printf("%i\n", fichier->taille);
 
 	fichier->donnee = malloc(sizeof( unsigned char) * fichier->taille);
 	FILE* f = fopen(*nom,"r");
-	int j = 0;
+	
 	while(!feof(f)){
     //on lit un caractère du fichier
 		caractere =fgetc(f);
-		// entier = (unsigned int )caractere;
-		// caractere = (unsigned char)entier;
-		if ( j++< 5)
 
     //On ajoute ce caractère dans notre structure
 		fichier->donnee[i] = caractere;
 
-    //Si le caractère n'a encore jamais été lu, on incrémente la variable qui correspond au nombre de caractères différents
+    //Si le caractère n'a encore jamais été lu
+	//on incrémente la variable qui correspond au nombre de caractères différents
 		if (fichier->occurrence[(int)caractere] == 0)
 			fichier->char_dif++;
 
@@ -68,13 +62,12 @@ void lire_fichier(char** nom, p_lecture fichier){
 		fichier->occurrence[(int)caractere]++;
 		i++;
 	}
-	//printf("char dif : %d\n", fichier->char_dif);
 	fclose(f);
 }
 
 /*
 lecture de l'entete
-remplis la lecture : taille et donnees
+remplis la lecture : taille et données
 remplis la table  : longueur
 */
 void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
@@ -85,22 +78,22 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 		exit(EXIT_FAILURE);
 	}
 
-	int l;//sert pour la longueur de chaque lettre
-	int prec = -2;//sert pour le RLE, -2 n'est pas un caractère
-	int j; //car on commence avec le caractere precedent le nombre d'occurence
+	int l;			//sert pour la longueur de chaque lettre
+	int prec = -2;	//sert pour le RLE, -2 n'est pas un caractère
+	int j; 			//car on commence avec le caractere precedent le nombre d'occurence
 	int occur;
 	int i = 0;
 
 	initialisation_struct(lect);
-  //on écrit le nombre de caract
+  	//on écrit le nombre de caractère
 	fscanf(f,"%d", &(lect->taille));
 
-
 	while(i<ASCII && !feof(f)){
-		j = 0; //parcours pour RLE
-		occur = 0; //
+		j = 0; 		//parcours pour RLE
+		occur = 0; 
 		fscanf(f,"%d",&l);
-				//Cas RLE
+
+		//Cas RLE
 		if(prec == l){
 			fscanf(f,"%d",&occur); //récupère le nombre d'occurence du char
   		}
@@ -109,15 +102,14 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 		  	lect->char_dif += (l!=0) ? 1 : 0;
 		  	modifier_longueur(t, i, l);
 		  	modifier_correspondance(t, i, 0);
-			j++;//parcours des occurences
-			i++;//parcours la table
+			j++;		//parcours des occurences
+			i++;		//parcours la table
 		}
 		prec = l;
 	}
 	fseek(f, 1, SEEK_CUR); // on saute l'espace de fin d'entete
-	printf("     Affichage de la table après lecture de l'entête.\n");
 
-	  //remplissage des donnees
+	//remplissage des donnees
 	lect->donnee = malloc(taille(*lect));
 	i = 0;
 	while(!feof(f)){
@@ -137,18 +129,18 @@ char* creer_nom_fichier(char* nom_fichier){
 	extension = strrchr(sanscpr, '.');
 
    	// Un point avec une extension 
-	if(extension == NULL){
-		strcat(nom, sanscpr);
-		strcat(nom, ajout);
-	}
-   	// Un point mais pas d'extension ou pas de point
-	else{
+	if (strlen(extension) < 5){
 		char *sansext = malloc(sizeof(char) * (strlen(sanscpr) - strlen(extension)));	// .cpr = 4 caracteres
 		strncpy(sansext, sanscpr, strlen(sanscpr) - strlen(extension));
 
 		strcat(nom, sansext);
 		strcat(nom, ajout);
 		strcat(nom, extension);	
+	}
+	// Un point mais pas d'extension ou pas de point
+	else {
+		strcat(nom, sanscpr);
+		strcat(nom, ajout);
 	}
 	return nom;
 }
@@ -190,40 +182,34 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression)
 
 	if(!decompression){
 
-  //  		ecriture du nombre de caractere
+  		// écriture du nombre de caractères
 		fprintf(fichier, "%i ", taille(l) );
 
-  //  		// ecriture de la table de longueur
-		// for(int j=0; j<ASCII; j++)
-		// 	fprintf(fichier, "%i ",acces_longueur(t, j));
+   		// écriture de la table de longueur
 		char* table = faire_entete_RLE(&t);
 		fputs(table,fichier);
 	}
 
-  	//écriture dans le fichier des données du fichier
-
+  	// écriture dans le fichier des données
 	while (i != taille_ecriture) {
 		fprintf(fichier, "%c",ecriture[i] );
 		i++;
 	}
 	printf("Ecriture dans le fichier %s\n", nom);
 
-  fclose (fichier); //fermeture du fichier
+  fclose (fichier); // fermeture du fichier
   return;
 }
-
-
-
 
 void faire_donnee(p_table t, p_lecture l){
 	int i=0;
 	int j=0;
-	// nous initialisons la taille des données à ecrire
+	// nous initialisons la taille des données à écrire
 	ecriture = malloc(sizeof( unsigned char) * l->taille);
 	unsigned char current =*(l->donnee+i);
 	unsigned int entier;
 	int longueur;
-	int  corresp;
+	int corresp;
 	int compteur_current =8;
 	unsigned int car_fin=0;
 	unsigned char car;
@@ -233,18 +219,16 @@ void faire_donnee(p_table t, p_lecture l){
 	unsigned int caractere_tmp;
 	int k;
 	while(current != '\0'){
-		//on Prend le code ascii du caractère courant
+		//on prend le code ascii du caractère courant
 		entier = (int)current;
-    		// printf("%d\n",entier );
+
 		//on prend la longueur du code correspondant
 		longueur =  acces_longueur(*t,entier);
-   		 // printf("longueur : %d\n", longueur );
+   		
 		//on prend l'entier correspondant au code du caractère dans l'arbre de huffman
 		corresp = acces_correspondance(*t,entier);
-   		 // printf("corresp : %d\n", corresp );
 
-		//si la longueur tiens dans 8 les bits restant du carctère a afficher
-
+		//si la longueur tient dans les 8 bits restant du caractères à afficher
 		if(compteur_current -longueur >0){
 			car_fin += (corresp << (compteur_current -longueur));
 			compteur_current = compteur_current -longueur;
@@ -258,7 +242,8 @@ void faire_donnee(p_table t, p_lecture l){
 			car_fin=0;
 			compteur_current=8;
 		}
-		//Sinon il faut tronquer les premier bit de l'entier afficher le caractère et ajouter le reste dans le caractère suivant
+		//Sinon il faut tronquer les premiers bit de l'entier affichant le caractère
+		//et ajouter le reste dans le caractère suivant
 		else{
 			k=0;
 
@@ -286,9 +271,6 @@ void faire_donnee(p_table t, p_lecture l){
 	car = ( unsigned char)car_fin;
 	*(ecriture+j) = car;
 	taille_ecriture = j;
-  // printf("j : %d\n", j );
-  // printf("strlen ecriture %li\n", strlen(ecriture) );
-
 }
 
 int prendre_byte( unsigned char current, int i){
@@ -296,7 +278,6 @@ int prendre_byte( unsigned char current, int i){
 	res = current & (1 << (i-1));
 	res >>= (i-1);
 	return res;
-
 }
 
 void traiter_bit(p_arbre *tmp, int byte, p_arbre *a, int *i ){

@@ -1,9 +1,5 @@
 #include "lecture_ecriture.h"
-// #include "arbres.h"
 #include "arbres_fonctions.h"
-
-
-
 
 char* int_to_char(int entier){
 	int j=0;

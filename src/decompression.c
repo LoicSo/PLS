@@ -13,11 +13,11 @@ p_arbre* init_tab_decomp(p_table t, int nb_car){
 	{
 		noeud = malloc(sizeof(arbre));
 
-		// On cherche les caracteres dont la longueur est superieure a 0
+		// On cherche les caractères dont la longueur est superieure a 0
 		while(i < ASCII && !acces_longueur(*t, i))
 			i++;
 
-		// On creer une feuille pour chaque caractere
+		// On crée une feuille pour chaque caractère
 		if (i < ASCII)
 		{
 			noeud->f_gauche = NULL;
@@ -50,7 +50,7 @@ void trier_longueur(p_arbre **tab_noeud, int nb_car){
 	}
 }
 
-// Retourne un tableau avec les noeuds a la profondeur p
+// Retourne un tableau avec les noeuds à la profondeur p
 p_arbre* symbole(p_arbre* tab_noeud, int longueur, int nb_car, int* nb_symb){
 	int tete = 0;
 	int queue = 0;
@@ -72,7 +72,7 @@ p_arbre* symbole(p_arbre* tab_noeud, int longueur, int nb_car, int* nb_symb){
 	return symb;
 }
 
-// Creer les noeuds fils de ceux de anciens qui ne sont pas de feuille
+// Crée les noeuds fils des noeuds du tableau anciens qui ne sont pas des feuilles
 p_arbre* creer_nouveaux(p_arbre* anciens, int *taille){
 	int i = 0;
 	int j = 0;
@@ -113,7 +113,6 @@ p_arbre arbre_decompression(p_table t, p_lecture l){
 	tab_noeud = init_tab_decomp(t, nb_car);
 
 	trier_longueur(&tab_noeud, nb_car);
-	//trier_caractere(&tab_noeud, nb_car);
 
 	int lmax = tab_noeud[nb_car-1]->profondeur;
 

@@ -1,6 +1,5 @@
 #include "calcul.h"
 
-
 //initialise le tableau de fréquence à 0
 void initialiser(double frequence[ASCII]) {
 	for (int i=0; i<ASCII; i++) {
@@ -14,9 +13,6 @@ void calcul_frequence(double frequence[ASCII], lecture l) {
 	initialiser(frequence);
 	for (int i=0; i<ASCII; i++) {
 		frequence[i] = (double)acces_occurrence(l,i) / taille(l);
-		// if(acces_occurrence(l,i)){
-		// 	printf("frequence : %lf      %d\n", frequence[i], i);
-		// }
 	}
 
 }

@@ -11,9 +11,6 @@
 #ifndef CALCUL_H
 #define CALCUL_H
 
-
-
-
 /**
  * @brief Permet d'initialisé la fréquence a 0
  *

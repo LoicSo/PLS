@@ -4,12 +4,6 @@
 #include <math.h>
 
 #define ASCII 256
-
-// #ifndef ARBRE_H
-// #define ARBRE_H
-// #include "arbres.h"
-// #endif
-
 #ifndef LECTURE_H
 #define LECTURE_H
 
