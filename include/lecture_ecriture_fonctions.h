@@ -26,7 +26,7 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression);
  * @param f fichier de depart
  * @return la longueur du fichier
  */
-  int longueur_fichier(char* nom);
+  int longueur_fichier(char** nom);
 
 /**
  * @brief Permet d'initialisé la structure depuis un fichier
@@ -36,8 +36,7 @@ void ecrire_fichier (char *nom_fichier, lecture l, table t, int decompression);
  * @param l structure du fichier
  * @return une structure de lecture complete
  */
-ecture lire_fichier(char** nom, p_lecture l);
-
+void lire_fichier(char** nom, p_lecture fichier);
 /**
  * @brief Permet de transcoder les caractère grace au code de Huffman
  *

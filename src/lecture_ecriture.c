@@ -41,10 +41,10 @@ void lire_fichier(char** nom, p_lecture fichier){
 	unsigned int entier;
 	int i=0;
 	
-	//printf("%s\n",*nom );
+	printf("%s\n",*nom );
 	
 	initialisation_struct(fichier);
-	//printf("%s\n",*nom );
+	// printf("%s\n",*nom );
 
 	fichier->taille = longueur_fichier(nom);
 	//printf("%i\n", fichier->taille);
@@ -132,7 +132,6 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 }
 
 char* creer_nom_fichier(char* nom_fichier){
-	
 	char* ajout = "_decomp";
 	char* sanscpr = malloc(sizeof(char) * strlen(nom_fichier) - 4);	// .cpr = 4 caracteres
 	strncpy(sanscpr, nom_fichier, strlen(nom_fichier) - 4);
@@ -143,18 +142,18 @@ char* creer_nom_fichier(char* nom_fichier){
 	extension = strrchr(sanscpr, '.');
 
    	// Un point avec une extension 
-	if(strlen(extension) == 4){
-		char *sansext = malloc(sizeof(char) * strlen(sanscpr) - 4);	// .cpr = 4 caracteres
-		strncpy(sansext, sanscpr, strlen(sanscpr) - 4);
+	if(extension == NULL){
+		strcat(nom, sanscpr);
+		strcat(nom, ajout);
+	}
+   	// Un point mais pas d'extension ou pas de point
+	else{
+		char *sansext = malloc(sizeof(char) * (strlen(sanscpr) - strlen(extension)));	// .cpr = 4 caracteres
+		strncpy(sansext, sanscpr, strlen(sanscpr) - strlen(extension));
 
 		strcat(nom, sansext);
 		strcat(nom, ajout);
 		strcat(nom, extension);	
-	}
-   	// Un point mais pas d'extension ou pas de point
-	else{
-		strcat(nom, sanscpr);
-		strcat(nom, ajout);
 	}
 	return nom;
 }

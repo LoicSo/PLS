@@ -48,7 +48,7 @@ void compression (char** nom_fichier){
 	p_arbre a;	// notre arbre de Huffman
 	p_table t = malloc(sizeof(table));	// notre table de correspondance
 	
-	//printf("%s\n", *nom_fichier );
+	printf("%s\n", *nom_fichier);
 	// char* temp = malloc(sizeof(50));
 	// strcpy(temp, *nom_fichier);
 	// printf("%s\n",temp );
@@ -80,10 +80,10 @@ void decompression (char **nom_fichier){
 
   //lire_entete
 	lire_entete(nom_fichier, l, t);
-        affciher_table(*t);
-      printf("%s\n",l->donnee );
-      printf("%li\n",strlen(l->donnee) );
-      printf("%d\n", l->taille );
+        	affciher_table(*t);
+      // printf("%s\n",l->donnee );
+      // printf("%li\n",strlen(l->donnee) );
+      // printf("%d\n", l->taille );
 
 	// arbre
 	a = arbre_decompression(t, l);
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]){
 	char* nomFichier;
 	lignecommande(argc, argv, &param_d, &param_c, &nomFichier);
 	if(param_c){
-		//printf("%s\n", *nom_fichier );
+		printf("%s\n", nomFichier );
 		compression(&nomFichier);
 	}
 	else if(param_d){
