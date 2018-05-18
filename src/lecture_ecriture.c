@@ -115,7 +115,7 @@ void lire_entete(char **nom_fichier, p_lecture lect, p_table t){
 		prec = l;
 	}
 	fseek(f, 1, SEEK_CUR); // on saute l'espace de fin d'entete
-	printf("Affichage de la table après lecture de l'entete\n");
+	printf("     Affichage de la table après lecture de l'entête.\n");
 
 	  //remplissage des donnees
 	lect->donnee = malloc(taille(*lect));

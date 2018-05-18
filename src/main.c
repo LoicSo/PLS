@@ -48,40 +48,39 @@ void compression (char** nom_fichier){
 	p_arbre a;	// notre arbre de Huffman
 	p_table t = malloc(sizeof(table));	// notre table de correspondance
 	
-	printf("Début compression\n");
+	printf("Début compression :\n");
 	lire_fichier(nom_fichier, l);
-	printf("Lecture de fichier ..\n");
+	printf("     Lecture de fichier..\n");
 
   // freq
 
 	calcul_frequence(frequence, *l);
-	printf("Calcul des fréquence\n");
+	printf("     Calcul des fréquences..\n");
   // arbr
 	a = creation_arbre(frequence, l);
 	*t = faire_table(a);
-	printf("Création de l'arbre\n");
+	printf("     Création de l'arbre..\n");
 	a = arbre_decompression(t, l);
 	//afficher_arbre(a, 0);
 	//canoniser(a);
   // table
 	*t=faire_table(a);
-	//affciher_table(*t);
+	//afficher_table(*t);
   // donnees
-	printf("Transcodage\n");
+	printf("     Transcodage..\n");
 	faire_donnee(t,l);
   // ecrire donnees
-	printf("Ecriture du fichier\n");
 	ecrire_fichier(*nom_fichier, *l, *t, 0);
 }
 
 void decompression (char **nom_fichier){
-	printf("Début de compression\n");
+	printf("Début de compression :\n");
 	p_lecture l = malloc(sizeof(lecture));	// notre structure de lecture
 	p_arbre a;	// notre arbre de Huffman
 	p_table t = malloc(sizeof(table));	// notre table de correspondance
 
   //lire_entete
-	printf("lLecture d'entete\n");
+	printf("     Lecture d'entete..\n");
 	lire_entete(nom_fichier, l, t);
       // printf("%s\n",l->donnee );
       // printf("%li\n",strlen(l->donnee) );
@@ -89,13 +88,12 @@ void decompression (char **nom_fichier){
 
 	// arbre
 	a = arbre_decompression(t, l);
-	// afficher_arbre(a, 0);
+	//afficher_arbre(a, 0);
   //decoder
-	printf("Decryptage des données\n");
+	printf("     Decryptage des données..\n");
 	decripter_donnee(a, l);
 
   //ecrire donnees
-	printf("Ecriture du nouveau fichier\n");
 	ecrire_fichier(*nom_fichier, *l, *t, 1);
 }
 

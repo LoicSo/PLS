@@ -15,10 +15,10 @@ libcompresseur.so:
 	gcc -shared -o $(LIBDIR)/libcompresseur.so arbres.o calculs.o lecture_ecriture.o structure.o decompression.o
 
 $(EXEC) : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(EXEC)
+	$(CC) $(CFLAGS) $(OBJS) -o $(EXEC) -lm
 
 %.o: %.c %.h
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) -o $@ $< -lm
 
 # structure.o: structure.c
 # 	$(CC) -c -o $@ $< $(CFLAGS)
